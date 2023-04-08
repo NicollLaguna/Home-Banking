@@ -28,6 +28,7 @@ public class Client {
         firstName = first;
         lastName = last;
         email = mail;
+
     }
 
     public String getFirstName() {
