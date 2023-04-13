@@ -19,7 +19,7 @@ const app = createApp({
     methods: {
         async loadData() {
             try {
-                axios.get('http://localhost:8080/api/clients')
+                axios.get('http://localhost:8080/api/clients'+ this.id)
                     .then(response => {
                         this.datos = response.data;
                         this.params = new URLSearchParams(location.search);

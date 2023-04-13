@@ -24,12 +24,12 @@ public class Transaction {
     private Account account;
 
     public Transaction(){}
-    public Transaction(double mount,String describe, LocalDateTime dat, Account identify, TransactionType type1){
-        type = type1;
-        amount = mount;
-        description = describe;
-        date = dat;
-        account = identify;
+
+    public Transaction(double mount,String describe, LocalDateTime dat, TransactionType type1){
+        this.type = type1;
+        this.amount = mount;
+        this.description = describe;
+        this.date = dat;
     }
     public long getId() {
         return id;
@@ -47,13 +47,7 @@ public class Transaction {
         return amount;
     }
 
-    public void setAmount(double amount, TransactionType type) {
-        if (type == TransactionType.DEBIT){
-            this.amount = -amount;
-        }else {
-            this.amount = amount;
-        }
-    }
+    public void setAmount(double amount, TransactionType type) {this.amount = amount;}
 
     public String getDescription() {
         return description;

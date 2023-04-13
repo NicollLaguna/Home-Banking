@@ -26,11 +26,10 @@ public class Account {
 
     public Account() {};
 
-    public  Account (double balan, String num, LocalDateTime date, Client identify){
-        balance= balan;
-        number = num;
-        creationDate = date;
-        client = identify;
+    public  Account (double balan, String num, LocalDateTime date){
+        this.balance= balan;
+        this.number = num;
+        this.creationDate = date;
     }
 
     public long getId() {
@@ -75,5 +74,10 @@ public class Account {
 
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public void addTransaction (Transaction transaction){
+       transaction.setAccountId(this);
+        transactions.add(transaction);
     }
 }
