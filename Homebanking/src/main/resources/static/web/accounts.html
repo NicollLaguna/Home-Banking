@@ -12,13 +12,17 @@
     <title>Home Banking | Accounts</title>
 </head>
 
-<body class="font">
+<body class="font" id="app">
 
     <header>
-        <img src="./img/bankfont.png" alt="">
+        <img src="./img/bankfont.png">
         <h1>MINDHUB BROTHERS</h1>
+        <nav>
+            <a href="#">Accounts</a>
+            <a :href="'./cards.html?id='+idClient.id">Cards</a>
+        </nav>
     </header>
-    <main class="d-flex justify-content-center align-items-center flex-column" id="main">
+    <main class="d-flex justify-content-center align-items-center flex-column" >
         <div>
             <h2>Your Accounts {{idClient.firstName}} {{idClient.lastName}}</h2>
         </div>
@@ -31,7 +35,7 @@
                     <th>TRANSACTION</th>
                 </tr>
             </thead>
-            <tbody class="text-center" v-for="dato of idClient.accounts">
+            <tbody class="text-center" v-for="dato of idClient2">
                 <tr>
                     <td>{{dato.number}}</td>
                     <td>{{dato.creationDate.slice(0,10)}} at {{dato.creationDate.slice(11,16)}}</td>

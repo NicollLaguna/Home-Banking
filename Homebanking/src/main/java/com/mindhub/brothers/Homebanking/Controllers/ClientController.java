@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@RequestMapping("/api")
 @RestController
 public class ClientController {
     @Autowired
     private ClientRepository clientRepository;
 
-    @RequestMapping("/api/clients")
+    @RequestMapping("/clients")
     public List<ClientDTO> getClients(){
         return clientRepository.findAll()
                 .stream()
@@ -25,7 +25,7 @@ public class ClientController {
                 .collect(Collectors.toList());
     }
 
-    @RequestMapping("/api/clients/{id}")
+    @RequestMapping("/clients/{id}")
     public ClientDTO getClient(@PathVariable Long id) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         return optionalClient.map(client -> new ClientDTO(client)).orElse(null);

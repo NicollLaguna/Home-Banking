@@ -4,9 +4,8 @@ const app = createApp({
     data() {
         return {
             datos: [],
-            params: '',
             account: [],
-            id: '',
+            id: new URLSearchParams(location.search).get('id') ,
             amount: '',
             description: '',
             date: '',
@@ -19,14 +18,12 @@ const app = createApp({
         this.loadData();
     },
     methods: {
-        async loadData() {
+       loadData() {
             try {
                 axios.get('http://localhost:8080/api/accounts/' + this.id)
                     .then(response => {
                         this.datos = response.data;
-                        this.params = new URLSearchParams(location.search);
-                        this.id = this.params.get('id');
-                        this.account = this.datos.find(account => account.id == this.id)
+                        this.account = this.datos;
                         this.account2= this.account.transactions.sort((x,y)=> y.id-x.id);
                     })
                     
@@ -40,4 +37,4 @@ const app = createApp({
      
 
     }
-}).mount('#main');
+}).mount('#app');
