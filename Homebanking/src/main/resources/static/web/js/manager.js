@@ -38,4 +38,4 @@ const app = createApp({
             },
 
 },
-}).mount('#main');
+}).mount('#app');

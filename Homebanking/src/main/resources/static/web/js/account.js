@@ -4,40 +4,53 @@ const app = createApp({
     data() {
         return {
             datos: [],
-            params: '',
             account: [],
-            id: '',
+            idClient:new URLSearchParams(location.search).get('id'), 
+            id: new URLSearchParams(location.search).get('id') ,
             amount: '',
             description: '',
             date: '',
             type: '',
             number: '',
             account2: [],
+            Client: [],
         }
     },
     created() {
         this.loadData();
+        this.Data2();
     },
     methods: {
-        async loadData() {
+       loadData() {
             try {
                 axios.get('http://localhost:8080/api/accounts/' + this.id)
                     .then(response => {
                         this.datos = response.data;
-                        this.params = new URLSearchParams(location.search);
-                        this.id = this.params.get('id');
-                        this.account = this.datos.find(account => account.id == this.id)
+                        this.account = this.datos;
                         this.account2= this.account.transactions.sort((x,y)=> y.id-x.id);
                     })
                     
             } catch { err => console.log(err) };
         },
+        Data2(){
+            try{
+                axios.get('http://localhost:8080/api/clients/current'+ this.idClient)
+                    .then(response => {
+                        this.datos = response.data;
+                        this.Client = this.datos;
+                        console.log(this.Client);
+                    })
+            } catch { err => console.log(err) };
+            },
+        
         formatCurrency(amount){
             let options = { style: 'currency', currency: 'USD' };
             let numberFormat = new Intl.NumberFormat('en-US', options);
             return numberFormat.format(amount);
     },
-     
+        },
 
+        
+     
     }
-}).mount('#main');
+).mount('#app');

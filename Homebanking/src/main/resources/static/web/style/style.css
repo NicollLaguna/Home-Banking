@@ -1,6 +1,6 @@
 * {
-    padding:0;
-    margin:0;
+    padding: 0;
+    margin: 0;
     box-sizing: border-box;
 }
 
@@ -27,20 +27,33 @@ form {
     border-radius: 20px;
 }
 
+
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 1,
+        'GRAD' 0,
+        'opsz' 48;
+    color: white;
+    font-size: 50px !important;
+    text-shadow: 2px 2px 4px black;
+}
+
 .font {
-    background-image: url(../img/font.jpg);
-    background-repeat: repeat;
+    background-image: url(../img/B1.jpg);
+    background-repeat: no-repeat;
     background-size: cover;
 }
 
 h1 {
-    font-weight: bolder !important;
-   
+    text-shadow: 2px 2px 4px black;
+    color: white !important;
+    margin-bottom: 0px !important;
 }
 
 h2 {
+    text-shadow: 4px 4px 5px white;
     font-weight: bolder !important;
-   
+    font-family: 'Josefin Sans', sans-serif;
 }
 
 button {
@@ -50,17 +63,17 @@ button {
 }
 
 main {
-    background-color: rgba(255, 255, 255, 0.5);
-    min-height: 90vh;
+    min-height: 85vh;
 }
 
 header {
     display: flex;
-    background-color:#00d0fab6;
     padding: 1rem;
     gap: 1rem;
-    height: 10vh;
+    height: 15vh;
     align-items: center;
+    justify-content: space-evenly;
+    font-family: 'Josefin Sans', sans-serif;
 }
 
 header img {
@@ -68,9 +81,49 @@ header img {
     height: 50px;
 }
 
+header div {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 1rem;
+    padding: 0.5rem;
+    border: 2px solid white;
+    border-radius: 15px;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+}
+
+nav a:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid white;
+}
+
+table {
+    width: 65vw !important;
+    font-size: larger;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold !important;
+}
+
+thead,
+th,
+td,
+tbody {
+   border: 5px solid white !important;
+    background-color: transparent;
+    backdrop-filter: blur(20px);
+
+}
+
 @media only screen and (max-width: 399px) {
     table {
         font-size: 0.8rem;
     }
 }
-  
