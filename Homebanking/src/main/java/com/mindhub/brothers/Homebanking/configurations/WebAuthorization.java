@@ -21,12 +21,15 @@ public class WebAuthorization {
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
         http.authorizeRequests()
-                .antMatchers("/api/login").permitAll()
-                .antMatchers( HttpMethod.POST, "/web/index.html").permitAll()
-                .antMatchers(HttpMethod.POST ,"/web/accounts.html" , "/web/account.html" , "/web/cards.html").hasAuthority("ADMIN")
-                .antMatchers("/web/admin/**" , "/rest/**" , "/h2-console").hasAuthority("ADMIN")
-                .antMatchers("/api/logout").hasAuthority("CLIENT")
-                .antMatchers("/web/accounts.html" , "/web/account.html" , "/web/cards.html").hasAuthority("CLIENT");
+                .antMatchers(HttpMethod.POST,"/api/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/logout").permitAll()
+                .antMatchers(  "/web/index.html").permitAll()
+                .antMatchers(  "/web/js/index.js").permitAll()
+                .antMatchers(  "/web/style/index.css").permitAll()
+                .antMatchers(  "/web/style/**").permitAll()
+                .antMatchers("/manager.html").hasAuthority("ADMIN")
+                .antMatchers("/h2-console/**").hasAuthority("ADMIN")
+                .antMatchers( "/web/js/**" , "/web/html/**").hasAnyAuthority("CLIENT","ADMIN");
 
 
         http.formLogin()

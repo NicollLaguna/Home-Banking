@@ -25,7 +25,8 @@ public class HomebankingApplication {
 	@Bean
 	public CommandLineRunner initData(ClientRepository clientRepository , AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository,CardRepository cardRepository){
 		return (args) -> {
-
+			Client admin = new Client("Admin","Admin","admin@hopenedBank.com",passwordEncoder.encode("9999"));
+			clientRepository.save(admin);
 			Client client1 = new Client("Melba","Morel","melba@mindhub.com", passwordEncoder.encode("0000"));
 			clientRepository.save(client1);
 
@@ -57,11 +58,11 @@ public class HomebankingApplication {
 			accountRepository.save(account2);
 
 
-			Client client2 = new Client("Luisa", "Mendoza", "luisa@gmail.com", passwordEncoder.encode("1234" ));
+			Client client2 = new Client("Luisa", "Mendoza", "luisa@gmail.com", passwordEncoder.encode("1503" ));
 			clientRepository.save(client2);
 
-			Account account3 = new Account(4500, "VIN001",LocalDateTime.now());
-			Account account4 = new Account(8200, "VIN002", LocalDateTime.now().plusDays(2));
+			Account account3 = new Account(4500, "VIN003",LocalDateTime.now());
+			Account account4 = new Account(8200, "VIN004", LocalDateTime.now().plusDays(2));
 
 			client2.addAccount(account3);
 			client2.addAccount(account4);

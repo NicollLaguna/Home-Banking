@@ -21,7 +21,7 @@ header {
     display: flex;
     padding: 1rem;
     gap: 1rem;
-    height: 13vh;
+    min-height: 13vh;
     align-items: center;
     justify-content: space-evenly;
     font-family: 'Josefin Sans', sans-serif;
@@ -43,6 +43,9 @@ h1 {
     margin-bottom: 0px !important;
 }
 
+.navbar-nav{
+    z-index: 3;
+}
 
 .navbar-nav a {
     color: white;
@@ -60,8 +63,13 @@ h1 {
     color: black;
     border: 2px solid white;
 }
+.navbar-collapse {
+    background-color: transparent;
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+}
 
-header div button {
+.btnLogin-popup {
     color: black;
     background-color:  white;
     margin: 1rem;
@@ -71,7 +79,7 @@ header div button {
     border: none;
 }
 
-header div button:hover {
+.btnLogin-popup:hover {
     box-shadow: 2px 2px 2px black;
     padding: 0.6rem;
 }
