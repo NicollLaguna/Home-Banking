@@ -9,7 +9,7 @@ const app = createApp({
             thruDate:'',
             cardholder: '',
             cvv:'',
-            id: new URLSearchParams(location.search).get('id') ,
+            id: '',
             debit:[],
             credit:[],
         }
@@ -20,7 +20,7 @@ const app = createApp({
     methods: {
        loadData() {
             try {
-                axios.get('http://localhost:8080/api/clients/current'+ this.id)
+                axios.get('http://localhost:8080/api/clients/current')
                     .then(response => {
                         this.datos = response.data;
                         this.cards = this.datos.cards;
@@ -32,7 +32,11 @@ const app = createApp({
                     
             } catch { err => console.log(err) };
         },
-       
+        exit() {
+            axios.post('/api/logout')
+            .then(response => window.location.href="/web/index.html")
+            .catch(error => console.log(error));
+        }
      
     }
 }).mount('#app');

@@ -87,6 +87,9 @@ header div {
     align-items: center;
     justify-content: center;
 }
+header div>h5 {
+    margin-bottom: 0 !important;
+}
 
 nav a {
     color: white;
@@ -103,6 +106,10 @@ nav a:hover {
     background-color: white;
     color: black;
     border: 2px solid white;
+}
+.salir { 
+    color: black;
+    font-size: 2rem;
 }
 
 table {

@@ -21,6 +21,10 @@ header div {
   justify-content: center;
 }
 
+.salir{
+  color: black;
+  font-size: 2rem;
+}
 .contenedor {
   flex-wrap: wrap;
   gap: 3rem;

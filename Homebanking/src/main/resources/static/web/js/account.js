@@ -5,7 +5,7 @@ const app = createApp({
         return {
             datos: [],
             account: [],
-            idClient:new URLSearchParams(location.search).get('id'), 
+            idClient:'', 
             id: new URLSearchParams(location.search).get('id') ,
             amount: '',
             description: '',
@@ -34,7 +34,7 @@ const app = createApp({
         },
         Data2(){
             try{
-                axios.get('http://localhost:8080/api/clients/current'+ this.idClient)
+                axios.get('http://localhost:8080/api/clients/current')
                     .then(response => {
                         this.datos = response.data;
                         this.Client = this.datos;
@@ -47,7 +47,12 @@ const app = createApp({
             let options = { style: 'currency', currency: 'USD' };
             let numberFormat = new Intl.NumberFormat('en-US', options);
             return numberFormat.format(amount);
-    },
+    }, 
+    exit() {
+        axios.post('/api/logout')
+        .then(response => window.location.href="/web/index.html")
+        .catch(error => console.log(error));
+    }
         },
 
         

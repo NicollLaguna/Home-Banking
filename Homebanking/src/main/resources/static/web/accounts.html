@@ -21,6 +21,8 @@
     <script defer src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script defer src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script defer src="./js/accounts.js"></script>
+    <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
 
 <body class="font" id="app">
@@ -38,7 +40,8 @@
         </nav>
         <div>
             <h5>{{idClient.firstName}} {{idClient.lastName}}</h5>
-            <img src="./img/person-circle.svg" alt="">
+            <img src="./img/person-circle.svg">
+            <a href="" @click="exit"><ion-icon name="exit-outline" class="salir"></ion-icon></a>
         </div>
 
     </header>
@@ -59,15 +62,14 @@
                 <tr>
                     <td>{{dato.number}}</td>
                     <td>{{dato.creationDate.slice(0,10)}} at {{dato.creationDate.slice(11,16)}}</td>
-                    <td>{{formatMoney(dato.balance)}}</td>
-                    <td><a :href="'./account.html?id='+dato.id"><img src="./img/cuenta-bancaria.png"
-                                id="transaction"></a></td>
+                    <td>{{format(dato.balance)}}</td>
+                    <td><a :href="'./account.html?id='+dato.id"><img src="./img/cuenta-bancaria.png" id="transaction"></a></td>
                 </tr>
             </tbody>
         </table>
         <div>
             <h2 class="text-center mt-4">LOANS</h2>
-            <div v-if="idClient.loans.length > 0">
+            <div v-if="loans.length > 0">
                 <table class="mt-2 table">
                     <thead class="text-center">
                         <tr>
@@ -76,10 +78,10 @@
                             <th>PAYMENTS</th>
                         </tr>
                     </thead>
-                    <tbody class="text-center" v-for="dato of idClient.loans">
+                    <tbody class="text-center" v-for="dato of loans">
                         <tr>
                             <td>{{dato.name}}</td>
-                            <td>{{formatMoney(dato.amount)}}</td>
+                            <td>{{format(dato.amount)}}</td>
                             <td>{{dato.payments}}</td>
 
                         </tr>
