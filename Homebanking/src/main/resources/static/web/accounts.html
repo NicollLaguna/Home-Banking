@@ -49,6 +49,10 @@
         <div>
             <h2 class="mt-3">ACCOUNTS</h2>
         </div>
+        <div v-if="idClient2.length <=2">
+            <a href="" @click="newAccount" class="createdAccount"><ion-icon name="add-circle-outline"
+                    class="iconAdd"></ion-icon>Create new account</a>
+        </div>
         <table class=" table">
             <thead class="text-center">
                 <tr>
@@ -63,10 +67,12 @@
                     <td>{{dato.number}}</td>
                     <td>{{dato.creationDate.slice(0,10)}} at {{dato.creationDate.slice(11,16)}}</td>
                     <td>{{format(dato.balance)}}</td>
-                    <td><a :href="'./account.html?id='+dato.id"><img src="./img/cuenta-bancaria.png" id="transaction"></a></td>
+                    <td><a :href="'./account.html?id='+dato.id"><img src="./img/cuenta-bancaria.png"
+                                id="transaction"></a></td>
                 </tr>
             </tbody>
         </table>
+
         <div>
             <h2 class="text-center mt-4">LOANS</h2>
             <div v-if="loans.length > 0">

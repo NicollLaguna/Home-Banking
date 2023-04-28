@@ -34,6 +34,11 @@ const app = createApp({
             axios.post('/api/logout')
             .then(response => window.location.href="/web/index.html")
             .catch(error => console.log(error));
+        },
+        newAccount(){
+            axios.post('http://localhost:8080/api/clients/current/accounts')
+            .then(response=>window.location.href="/web/accounts.html")
+            .catch(error => console.log(error));
         }
         },
        

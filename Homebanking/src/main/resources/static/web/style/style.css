@@ -126,9 +126,55 @@ tbody {
    border: 5px solid white !important;
     background-color: transparent;
     backdrop-filter: blur(20px);
-
 }
 
+.createdAccount{
+    color: white;
+    text-decoration: none;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.5rem;
+    display: flex;
+}
+
+.iconAdd{
+     font-size: 2rem; 
+}
+
+.inbox{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 200px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+}
+select {
+    height: 100px !important;
+    width: 250px !important;
+}
+.cardsForm{
+    width: 350px;
+    height: 350px;
+    background: rgba(255, 255, 255, 0.555);
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    font-family: 'Arial Narrow', Arial, sans-serif;
+}
+
+.createCard {
+    color: black;
+    background-color: transparent;
+    margin: 1rem;
+    padding: 0.5rem;
+    border: 2px solid black !important;
+    border-radius: 15px;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+}
 @media only screen and (max-width: 399px) {
     table {
         font-size: 0.8rem;

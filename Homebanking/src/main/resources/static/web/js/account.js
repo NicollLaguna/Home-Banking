@@ -23,10 +23,9 @@ const app = createApp({
     methods: {
        loadData() {
             try {
-                axios.get('http://localhost:8080/api/accounts/' + this.id)
+                axios.get('http://localhost:8080/api/clients/current/accounts/' + this.id)
                     .then(response => {
-                        this.datos = response.data;
-                        this.account = this.datos;
+                        this.account = response.data;
                         this.account2= this.account.transactions.sort((x,y)=> y.id-x.id);
                     })
                     

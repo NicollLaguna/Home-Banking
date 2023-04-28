@@ -30,18 +30,19 @@
             <nav>
                 <a href="./accounts.html">ACCOUNTS</a>
                 <a href="#">CARDS</a>
+                <a v-if="cards.length <=5" href="./create-cards.html">CREATE CARD</a>
             </nav>
             <div>
                 <h5>{{datos.firstName}} {{datos.lastName}}</h5>
                 <img src="./img/person-circle.svg" alt="">
-                <a href="" @click="exit"><ion-icon name="exit-outline" class="salir"></ion-icon></a>
+             <a href="" @click="exit"><ion-icon name="exit-outline" class="salir"></ion-icon></a> 
             </div>
         </header>
         <main>
             <div class="contenedor d-flex justify-content-evenly pt-5">
                 <div>
                     <h2 class="text-center" style="font-family: 'Arial Narrow', Arial, sans-serif;">DEBIT</h2>
-                    <div class="card" v-if="debit.length > 0" v-for="dato of debit">
+                    <div class="card d-flex mb-4" v-if="debit.length > 0" v-for="dato of debit">
                         <div class="flip">
                             <div class="front" :class="dato.color">
                                 <div class="strip-bottom" :class="dato.color"></div>
@@ -101,7 +102,7 @@
     
                 <div>
                     <h2 class="text-center" style="font-family: 'Arial Narrow', Arial, sans-serif;">CREDIT</h2>
-                    <div class="card" v-if="credit.length > 0" v-for="dato of credit">
+                    <div class="card mb-4" v-if="credit.length > 0" v-for="dato of credit">
                         <div class="flip">
                             <div class="front" :class="dato.color">
                                 <div class="strip-bottom" :class="dato.color"></div>
