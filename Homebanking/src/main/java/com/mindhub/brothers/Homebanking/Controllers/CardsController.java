@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -44,14 +43,15 @@ public class CardsController {
             return new ResponseEntity<>("Missing data", HttpStatus.FORBIDDEN);
         }
         Random randomN = new Random();
-        int min = 0;
+        int min = 1000;
+        int min2 = 100;
         int max = 9999;
         int cvv = 999;
         int number = randomN.nextInt((max-min)+1)+min;
         int number2 = randomN.nextInt((max-min)+1)+min;
         int number3 = randomN.nextInt((max-min)+1)+min;
         int number4 = randomN.nextInt((max-min)+1)+min;
-        int cvvN = randomN.nextInt((cvv-min)+1)+min;
+        int cvvN = randomN.nextInt((cvv-min2)+1)+min2;
         if (cardRepository.findByCvv(cvvN) != null){
             return  new ResponseEntity<>("Cvv cannot be use", HttpStatus.FORBIDDEN);
         }

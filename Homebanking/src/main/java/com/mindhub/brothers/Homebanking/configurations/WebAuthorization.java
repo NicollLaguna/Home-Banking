@@ -16,10 +16,10 @@ import javax.servlet.http.HttpSession;
 
 @EnableWebSecurity
 @Configuration
-public class WebAuthorization {
+        public class WebAuthorization {
 
-    @Bean
-    public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
+        @Bean
+        public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/logout").permitAll()
