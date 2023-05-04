@@ -22,9 +22,10 @@ import javax.servlet.http.HttpSession;
         public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/logout").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/logout").hasAnyAuthority("CLIENT","ADMIN")
                 .antMatchers(  "/web/index.html").permitAll()
                 .antMatchers(  "/web/js/index.js").permitAll()
+                .antMatchers("/web/js/transfer.js").hasAnyAuthority("CLIENT", "ADMIN")
                 .antMatchers(  "/web/style/index.css").permitAll()
                 .antMatchers(  "/web/style/**").permitAll()
                 .antMatchers("/manager.html").hasAuthority("ADMIN")

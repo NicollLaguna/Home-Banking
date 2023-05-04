@@ -34,7 +34,7 @@ public class TransactionController {
     TransactionRepository transactionRepository;
 
     @Transactional
-    @RequestMapping(path = "/transaction", method = RequestMethod.POST)
+    @RequestMapping(path = "/transactions", method = RequestMethod.POST)
     public ResponseEntity<Object> newTransaction(Authentication authentication
             ,@RequestParam double amount,@RequestParam String description
             ,@RequestParam String account1,@RequestParam String account2){
@@ -42,8 +42,17 @@ public class TransactionController {
         Account originAccount = accountRepository.findByNumber(account1.toUpperCase());
         Account destinyAccount = accountRepository.findByNumber(account2.toUpperCase());
 
-    if (amount<1 || description.isEmpty() || originAccount == null || destinyAccount == null){
-        return  new ResponseEntity<>("Missing Data", HttpStatus.FORBIDDEN);//manejar error por individual
+    if (amount<1){
+        return  new ResponseEntity<>("Amount is necessary", HttpStatus.FORBIDDEN);
+    }
+    if(description.isBlank()){
+        return  new ResponseEntity<>("Description is necessary", HttpStatus.FORBIDDEN);
+    }
+    if(originAccount == null) {
+        return  new ResponseEntity<>("Origin account is necessary", HttpStatus.FORBIDDEN);
+    }
+    if(destinyAccount == null){
+        return  new ResponseEntity<>("Destiny account is necessary", HttpStatus.FORBIDDEN);
     }
     if (originAccount.equals(destinyAccount)){
         return new ResponseEntity<>("Accounts equals", HttpStatus.FORBIDDEN);

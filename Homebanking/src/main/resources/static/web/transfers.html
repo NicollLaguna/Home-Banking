@@ -9,22 +9,78 @@
     <link rel="shortcut icon" href="./img/logoBlack.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>| Transfers</title>
 </head>
 
-<body>
-    <div>
-        <h2>Transfers</h2>
-        <form action="">
-            <select name="" id=""></select>
-        </form>
+<body class="font">
+    <div id="app">
+        <header>
+            <div> <span class="material-symbols-outlined">
+                    savings
+                </span>
+                <h1>Hopened Bank</h1>
+            </div>
+            <nav>
+                <a href="./accounts.html">ACCOUNTS</a>
+                <a href="./cards.html">CARDS</a>
+                <a href="./transfers.html">TRANSFERS</a>
+            </nav>
+            <div>
+                <h5>{{idClient.firstName}} {{idClient.lastName}}</h5>
+                <img src="./img/person-circle.svg">
+                <a href="" @click="exit"><ion-icon name="exit-outline" class="salir"></ion-icon></a>
+            </div>
+        </header>
+        <main class="d-flex align-items-center flex-column justify-content-center ">
+            <h2 class="text-center">Transfers</h2>
+            <form @submit.prevent="newTransaction" class="d-flex align-items-center flex-column transForm gap-2">
+                <select @change="typeSelect" v-model="valueType" class="form-select" aria-label="Default select example"
+                    required>
+                    <option selected value="">Select the type of transaction </option>
+                    <option value="1">Own account</option>
+                    <option value="2">Someone else's account</option>
+                </select>
+
+                <select class="form-select" aria-label="Default select example" v-model="account1">
+                    <option selected value="">Select the origin account </option>
+                    <template v-for="account of accounts">
+                        <option :value="account.number">Account {{account.number}} Balance: ${{account.balance}}
+                        </option>
+                    </template>
+                </select>
+                <select class="form-select" aria-label="Default select example" v-if="valueType == 1"
+                    v-model="account2">
+                    <option selected value="">Select the destiny account </option>
+                    <template v-for="account of accounts">
+                        <option :value="account.number">Destiny account {{account.number}}</option>
+                    </template>
+                </select>
+                <div v-else class="d-flex align-items-center flex-column gap-2 otro">
+                    <label for="numberAccount" >Account number </label>
+                    <input type="text" v-model="account2" id="numberAccount" required>
+                </div>
+                    
+                    <label for="amountoSend">Amount </label>
+                    <input type="text" v-model="amount" id="amountoSend" required>
+                   
+                    <label for="description">Description</label>
+                    <input type="text" v-model="description" id="description">
+              
+                <button type="submit" class="createCard">Transfer</button>
+            </form>
+        </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
         crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="./js/cards.js"></script>
+    <script src="./js/transfer.js"></script>
 </body>
 
 </html>
