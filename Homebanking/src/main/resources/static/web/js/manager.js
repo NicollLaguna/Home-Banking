@@ -16,7 +16,7 @@ const app = createApp({
         async loadData(){
             try{
                 axios
-                .get('http://localhost:8080/rest/clients')
+                .get('http://localhost:8585/rest/clients')
                 .then(response => {
                 this.dataClients = response.data._embedded.clients;
             })}catch{err => console.log(err)};
@@ -24,7 +24,7 @@ const app = createApp({
             async postClient(){
                 try{
                 axios
-                .post('http://localhost:8080/rest/clients',{
+                .post('http://localhost:8585/rest/clients',{
                     firstName: this.firstName,
                     lastName: this.lastName,
                     email: this.email,

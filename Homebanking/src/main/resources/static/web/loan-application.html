@@ -22,6 +22,7 @@
     <script defer src="./js/loan-application.js"></script>
     <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="font" id="app">
     <header>
@@ -43,36 +44,36 @@
     </header>
     <main class="d-flex align-items-center flex-column">
         <h2 class="text-center">APPLY LOANS</h2>
-        <form @submit.prevent="newLoan">
-            <select @change="selectPayment" v-model="loanType" class="form-select" aria-label="Default select example">
+        <form @submit.prevent="newLoan" class="d-flex align-items-center flex-column transForm">
+            <select @change="selectPayment" v-model="loanType" class="form-select" aria-label="Default select example" required>
                 <option selected value="">Select the type of loan </option>
                 <template v-for="loan of loans">
                     <option :value="loan.name">{{loan.name}}
                     </option>
                 </template>
             </select>
-            <select class="form-select" aria-label="Default select example">
+            <select class="form-select" aria-label="Default select example" v-model="payments" required>
                 <option selected value="">Select payment </option>
                 <template v-for="payment of paymentSelect.payments">
-                    <option :value="payment">{{payment}}
-                    </option>
+                    <option :value="payment">{{payment}}</option>
                 </template>
             </select>
-            <select class="form-select" aria-label="Default select example">
-                <option selected value="">Select amount for the loan</option>
-                <template v-for="account of accounts">
-                    <option :value="account.number">Account {{account.number}} Balance: ${{account.balance}}
-                    </option>
-                </template>
-            </select>
-            <select class="form-select" aria-label="Default select example">
+            <div class="m-1 text-center">
+                <label class="d-flex flex-column">Enter the loan amount 
+                    <input type="number" v-model="amount" required>
+                </label>
+            </div>
+            <select class="form-select" aria-label="Default select example" v-model="accountNumber">
                 <option selected value="">Select destiny account</option>
                 <template v-for="account of accounts">
-                    <option :value="account.number">Account {{account.number}} Balance: ${{account.balance}}
+                    <option :value="account.number">Account {{account.number}}
                     </option>
                 </template>
             </select>
-            
+            <h5>Total loan : $ <span>{{amount*1.2}}</span></h5>
+            <button type="submit" class="createCard">Apply</button>
+        <p>The amount to pay is equal to the amount of the loan plus 20% interest</p>
+        
         </form>
     </main>
 </body>

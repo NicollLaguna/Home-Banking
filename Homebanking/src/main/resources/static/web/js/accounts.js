@@ -16,7 +16,7 @@ const app = createApp({
     methods: {
          loadData() {
             
-                axios.get('http://localhost:8080/api/clients/current')
+                axios.get('http://localhost:8585/api/clients/current')
                     .then(response => {
                         this.datos = response.data;
                         this.idClient = this.datos;
@@ -36,7 +36,7 @@ const app = createApp({
             .catch(error => console.log(error));
         },
         newAccount(){
-            axios.post('http://localhost:8080/api/clients/current/accounts')
+            axios.post('http://localhost:8585/api/clients/current/accounts')
             .then(response=>window.location.href="/web/accounts.html")
             .catch(error => console.log(error));
         }

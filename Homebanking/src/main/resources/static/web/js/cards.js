@@ -20,7 +20,7 @@ const app = createApp({
     methods: {
        loadData() {
          
-                axios.get('http://localhost:8080/api/clients/current')
+                axios.get('http://localhost:8585/api/clients/current')
                     .then(response => {
                         this.datos = response.data;
                         this.cards = this.datos.cards;
