@@ -6,6 +6,8 @@ import com.mindhub.brothers.Homebanking.models.Account;
 import com.mindhub.brothers.Homebanking.models.Client;
 import com.mindhub.brothers.Homebanking.repositories.AccountRepository;
 import com.mindhub.brothers.Homebanking.repositories.ClientRepository;
+import com.mindhub.brothers.Homebanking.services.AccountService;
+import com.mindhub.brothers.Homebanking.services.ClientServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,27 +25,24 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class AccountController {
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientServices clientServices;
 
     @RequestMapping(path = "/clients/current", method = RequestMethod.GET)
     public ClientDTO getClient(Authentication authentication) {
-        return new ClientDTO(clientRepository.findByEmail(authentication.getName()));
+        return clientServices.getClientAuthentication(authentication);
     }
 
     @RequestMapping("/clients/current/accounts")
     public List<AccountDTO> getAccounts(Authentication authentication){
-        return accountRepository.findAll()
-                .stream().map(account -> new AccountDTO(account))
-                .collect(Collectors.toList());
+        return accountService.getAccounts(authentication);
     }
 
     @RequestMapping("/clients/current/accounts/{id}")
     public AccountDTO getAccount(@PathVariable Long id){
-        Optional<Account> optionalAccount = accountRepository.findById(id);
-        return optionalAccount.map(account ->  new AccountDTO(account)).orElse(null);
+        return accountService.getAccount(id);
     }
 
    @RequestMapping(path = "/clients/current/accounts", method = RequestMethod.POST)
@@ -53,15 +52,15 @@ public class AccountController {
        int max = 99999999;
        int number = randomN.nextInt((max-min)+1)+min;
 
-        if (clientRepository.findByEmail(authentication.getName()).getAccounts().size()<=2){
+        if (clientServices.findByEmail(authentication.getName()).getAccounts().size()<=2){
             Account accountCreated = new Account(0.00,"VIN"+number, LocalDateTime.now());
-            clientRepository.findByEmail(authentication.getName()).addAccount(accountCreated);
-            accountRepository.save(accountCreated);
+            clientServices.findByEmail(authentication.getName()).addAccount(accountCreated);
+            accountService.saveAccount(accountCreated);
         }else{
             return new ResponseEntity<>("There are 3 accounts created", HttpStatus.FORBIDDEN);
         }
 
-       if (accountRepository.findByNumber("VIN"+number) != null){
+       if (accountService.findByNumber("VIN"+number) != null){
            return  new ResponseEntity<>("Number cannot be use", HttpStatus.FORBIDDEN);
        }
         return new ResponseEntity<>(HttpStatus.CREATED);

@@ -3,30 +3,50 @@ const {createApp} = Vue
 const app = createApp({
     data(){
         return{
-            transfer:[],
-            type:'',
-            valueType:'',
-            amount:'',
-            account1:'',
-            account2:'',
-            description:'',
-            accounts:[],
             idClient:[],
+            accounts: [],
+            loans:[],
+			accountNumber: '',
+			payments: '',
+            paymentSelect: '',
+			amount:'',
+			loanType: '',
+			loadId: '',
         }
     },
     created(){
-        this.election()
+        this.loanData()
+        this.loanData2()
     },
-    methods: {
-        election(){
-            axios.get('http://localhost:8080/api/clients/current')
+    methods:{
+        loanData(){
+            axios.get('http://localhost:8080/api/loans')
             .then(response => {
-                this.idClient = response.data;
-                this.accounts = this.idClient.accounts;
-                console.log(this.accounts)
+                this.loans = response.data;
+                console.log(this.loans)
             })
+            .catch(error => console.log(error));
         },
-        newTransaction(){
+        loanData2(){
+            axios.get('http://localhost:8080/api/clients/current')
+				.then(response => {
+					this.idClient = response.data;
+                    this.accounts= this.idClient.accounts
+				})
+				.catch(error => console.log(error));
+        },
+        exit() {
+            axios.post('/api/logout')
+                .then(response => window.location.href = "/web/index.html")
+                .catch(error => console.log(error));
+        },
+        selectPayment(){
+            this.paymentSelect = this.loans.filter(loan =>{
+                return this.loanType.includes(loan.name);
+            })[0];
+        },
+        newLoan(){
+            this.loanId = this.selectPayment.id;
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                   confirmButton: 'btn btn-success',
@@ -36,7 +56,7 @@ const app = createApp({
               })
               
               swalWithBootstrapButtons.fire({
-                title: 'Do you want to make the transaction?',
+                title: 'Do you want to apply the loan?',
                 text: "You can't reverse this action.!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -45,7 +65,7 @@ const app = createApp({
                 reverseButtons: true
               }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.post('/api/transactions','amount=' + this.amount + '&description=' + this.description + '&account1=' + this.account1 + '&account2=' + this.account2 )
+                    axios.post('/api/loans','amount=' + this.amount + '&id=' + this.loadId + '&payments=' + this.payments + '&accountNumber=' + this.accountNumber )
                   .then((result) => window.location.href = "/web/accounts.html")
                   .catch(error => {
                     Swal.fire({
@@ -55,8 +75,8 @@ const app = createApp({
                     
                 })
                 swalWithBootstrapButtons.fire(
-                    'Succesful transaction',
-                    'Your money was sent.',
+                    'Succesful Apply',
+                    'Your apply was made.',
                     'success'
                   )
                   
@@ -65,7 +85,7 @@ const app = createApp({
                 ) {
                   swalWithBootstrapButtons.fire(
                     'Cancelled',
-                    "Your transaction didn't go through",
+                    "Your application didn't go through",
                     'error'
                   )
                 }
@@ -75,22 +95,7 @@ const app = createApp({
                     text: error.response.data}
                 )
             })
-               
-        },
-        typeSelect() {
-            if (this.valueType == 1) {
-                this.type = "Own account"
-            }
-            else if (this.valueType == 2) {
-                this.type = "Someone else's account"
-            }
-
-        },
-        exit() {
-            axios.post('/api/logout')
-                .then(response => window.location.href = "/web/index.html")
-                .catch(error => console.log(error));
-        },
+        }
     }
 })
 app.mount('#app');

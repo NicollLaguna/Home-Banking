@@ -191,6 +191,19 @@ select {
     width: 250px;
 }
 
+.applyLoan{
+    color: white;
+    text-decoration: none;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+.iconApply {
+    margin-right: 0.5rem;
+    font-size: 2rem;
+}
+
 @media only screen and (max-width: 399px) {
     table {
         font-size: 0.8rem;

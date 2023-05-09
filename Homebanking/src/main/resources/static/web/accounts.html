@@ -75,7 +75,11 @@
         </table>
 
         <div>
-            <h2 class="text-center mt-4">LOANS</h2>
+            <div class="text-center mt-4">
+                <h2>LOANS</h2>
+                <a href="./loan-application.html" class="applyLoan"><ion-icon name="download-outline" class="iconApply"></ion-icon>Apply</a>
+            </div>
+
             <div v-if="loans.length > 0">
                 <table class="mt-2 table">
                     <thead class="text-center">
@@ -94,6 +98,7 @@
                         </tr>
                     </tbody>
                 </table>
+
             </div>
             <div v-else>
                 <h3>You don't have loans</h3>

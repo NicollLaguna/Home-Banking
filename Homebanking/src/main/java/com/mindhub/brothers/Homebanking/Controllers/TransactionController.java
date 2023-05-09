@@ -7,6 +7,9 @@ import com.mindhub.brothers.Homebanking.models.TransactionType;
 import com.mindhub.brothers.Homebanking.repositories.AccountRepository;
 import com.mindhub.brothers.Homebanking.repositories.ClientRepository;
 import com.mindhub.brothers.Homebanking.repositories.TransactionRepository;
+import com.mindhub.brothers.Homebanking.services.AccountService;
+import com.mindhub.brothers.Homebanking.services.ClientServices;
+import com.mindhub.brothers.Homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,20 +30,20 @@ import static java.util.stream.Collectors.toList;
 public class TransactionController {
 
     @Autowired
-    AccountRepository accountRepository;
+    AccountService accountService;
     @Autowired
-    ClientRepository clientRepository;
+    ClientServices clientServices;
     @Autowired
-    TransactionRepository transactionRepository;
+    TransactionService transactionService;
 
     @Transactional
     @RequestMapping(path = "/transactions", method = RequestMethod.POST)
     public ResponseEntity<Object> newTransaction(Authentication authentication
             ,@RequestParam double amount,@RequestParam String description
             ,@RequestParam String account1,@RequestParam String account2){
-        Client client = clientRepository.findByEmail(authentication.getName());
-        Account originAccount = accountRepository.findByNumber(account1.toUpperCase());
-        Account destinyAccount = accountRepository.findByNumber(account2.toUpperCase());
+        Client client = clientServices.findByEmail(authentication.getName());
+        Account originAccount = accountService.findByNumber(account1.toUpperCase());
+        Account destinyAccount = accountService.findByNumber(account2.toUpperCase());
 
     if (amount<1){
         return  new ResponseEntity<>("Amount is necessary", HttpStatus.FORBIDDEN);
@@ -70,11 +73,11 @@ public class TransactionController {
 
         Transaction debitTransaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.DEBIT);
         originAccount.addTransaction(debitTransaction);
-        transactionRepository.save(debitTransaction);
+        transactionService.saveTransaction(debitTransaction);
 
         Transaction creditTransaction = new Transaction(amount, description, LocalDateTime.now(),TransactionType.CREDIT);
         destinyAccount.addTransaction(creditTransaction);
-        transactionRepository.save(creditTransaction);
+        transactionService.saveTransaction(creditTransaction);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

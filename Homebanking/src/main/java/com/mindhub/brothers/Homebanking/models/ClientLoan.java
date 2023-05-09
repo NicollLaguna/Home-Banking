@@ -34,6 +34,8 @@ public class ClientLoan {
         this.name = name;
     }
 
+
+
     public long getId() {
         return id;
     }
