@@ -8,7 +8,7 @@ const app = createApp({
             loans:[],
 			accountNumber: '',
 			payments: '',
-            paymentSelect: '',
+            paymentSelect:'',
 			amount:'',
 			loanType: '',
 			loadId: '',
@@ -42,11 +42,12 @@ const app = createApp({
         },
         selectPayment(){
             this.paymentSelect = this.loans.filter(loan =>{
-                return this.loanType.includes(loan.name);
+                return this.loanType.includes(loan.name); 
             })[0];
+            console.log(this.paymentSelect)
+           
         },
         newLoan(){
-            this.loanId = this.selectPayment.id;
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                   confirmButton: 'btn btn-success',
@@ -65,7 +66,7 @@ const app = createApp({
                 reverseButtons: true
               }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.post('/api/loans','amount=' + this.amount + '&id=' + this.loadId + '&payments=' + this.payments + '&accountNumber=' + this.accountNumber )
+                    axios.post('/api/loans',{id:this.paymentSelect.id,amount:this.amount, payments: this.payments, accountNumber:this.accountNumber} )
                   .then((result) => window.location.href = "/web/accounts.html")
                   .catch(error => {
                     Swal.fire({
