@@ -14,6 +14,9 @@ const app = createApp({
             number: '',
             account2: [],
             Client: [],
+            dateStart: '',
+            dateEnd:'',
+            accNumber: '',
         }
     },
     created() {
@@ -27,17 +30,17 @@ const app = createApp({
                     .then(response => {
                         this.account = response.data;
                         this.account2= this.account.transactions.sort((x,y)=> y.id-x.id);
+                        console.log(this.account)
                     })
                     
             } catch { err => console.log(err) };
         },
         Data2(){
             try{
-                axios.get('http://localhost:8585/api/clients/current')
+                axios.get('http://localhost:8585/api/clients/current' )
                     .then(response => {
                         this.datos = response.data;
                         this.Client = this.datos;
-                        console.log(this.Client);
                     })
             } catch { err => console.log(err) };
             },
@@ -51,10 +54,35 @@ const app = createApp({
         axios.post('/api/logout')
         .then(response => window.location.href="/web/index.html")
         .catch(error => console.log(error));
-    }
-        },
-
-        
-     
-    }
+    },
+    
+    //PDF
+    download(accNumber,dateStart,dateEnd){
+        if(this.dateStart !== "" && this.dateEnd !== ""){
+            axios.post('/api/client/current/account_status',`accNumber=${this.account.number}&dateStart=${this.dateStart}00:00 &&dateEnd=${this.dateEnd} 23:58`)
+            .then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data], {
+                    type: "application/pdf"
+                }));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download',`Transaction${this.account.number}.pdf`);
+                document.body.appendChild(link);
+                link.click();
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    text: error.response.data}
+                )
+            });
+        }else{
+            Swal.fire(
+                'Cancelled',
+                "Select two dates to filter!",
+                'error'
+            );
+        }}//PDF
+    }, 
+}
 ).mount('#app');

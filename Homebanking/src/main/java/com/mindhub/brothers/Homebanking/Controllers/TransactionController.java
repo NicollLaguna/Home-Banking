@@ -1,12 +1,7 @@
 package com.mindhub.brothers.Homebanking.Controllers;
 
-import com.mindhub.brothers.Homebanking.models.Account;
-import com.mindhub.brothers.Homebanking.models.Client;
-import com.mindhub.brothers.Homebanking.models.Transaction;
-import com.mindhub.brothers.Homebanking.models.TransactionType;
-import com.mindhub.brothers.Homebanking.repositories.AccountRepository;
-import com.mindhub.brothers.Homebanking.repositories.ClientRepository;
-import com.mindhub.brothers.Homebanking.repositories.TransactionRepository;
+import com.itextpdf.text.DocumentException;
+import com.mindhub.brothers.Homebanking.models.*;
 import com.mindhub.brothers.Homebanking.services.AccountService;
 import com.mindhub.brothers.Homebanking.services.ClientServices;
 import com.mindhub.brothers.Homebanking.services.TransactionService;
@@ -14,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -37,7 +32,7 @@ public class TransactionController {
     TransactionService transactionService;
 
     @Transactional
-    @RequestMapping(path = "/transactions", method = RequestMethod.POST)
+    @PostMapping("/transactions")
     public ResponseEntity<Object> newTransaction(Authentication authentication
             ,@RequestParam double amount,@RequestParam String description
             ,@RequestParam String account1,@RequestParam String account2){
@@ -81,4 +76,51 @@ public class TransactionController {
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    //Descargar estado de cuenta--Inicio--
+
+    @PostMapping("client/current/account_status")
+    public ResponseEntity<Object> accountStatusPDF(HttpServletResponse response, Authentication authentication,
+    @RequestParam String accNumber, @RequestParam String dateStart, @RequestParam String dateEnd) throws DocumentException, IOException{
+        Client client = clientServices.findByEmail(authentication.getName());
+        Account account = accountService.findByNumber(accNumber);
+
+        if (client == null){
+            return new ResponseEntity<>("This user is not a Client", HttpStatus.FORBIDDEN);
+        }
+
+        if (account == null){
+            return new ResponseEntity<>("Invalid account number", HttpStatus.FORBIDDEN);
+        }
+
+        if (client.getAccounts().stream().noneMatch(account1 -> account1.getNumber().equals(account.getNumber()))){
+            return new ResponseEntity<>("This account is not owned by you", HttpStatus.FORBIDDEN);
+        }
+
+        if (dateStart.isBlank()){
+            return new ResponseEntity<>("Start date is necessary", HttpStatus.FORBIDDEN);
+        }
+
+        if (dateEnd.isBlank()){
+            return new ResponseEntity<>("End date is necessary", HttpStatus.FORBIDDEN);
+        }
+
+        response.setContentType("application/pdf");
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename= Transactions" + accNumber + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        LocalDateTime dateTimeStart = LocalDateTime.parse(dateStart, formatter);
+        LocalDateTime dateTimeEnd = LocalDateTime.parse(dateEnd, formatter);
+
+        List<Transaction> listTransactions = transactionService.findBetween(client, accNumber, dateTimeStart, dateTimeEnd);
+
+        TransactionPDF  transactionPDF = new TransactionPDF(listTransactions, account);
+        transactionPDF.usePDFExport(response);
+
+        return new ResponseEntity<>("ACCOUNT STATUS WAS CREATED", HttpStatus.CREATED);
+    }
+    //Descargar estado de cuenta--Fin--
 }

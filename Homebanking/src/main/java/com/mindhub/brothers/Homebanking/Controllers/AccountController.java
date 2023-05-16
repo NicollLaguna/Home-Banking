@@ -30,22 +30,22 @@ public class AccountController {
     @Autowired
     private ClientServices clientServices;
 
-    @RequestMapping(path = "/clients/current", method = RequestMethod.GET)
+    @GetMapping("/clients/current")
     public ClientDTO getClient(Authentication authentication) {
         return clientServices.getClientAuthentication(authentication);
     }
 
-    @RequestMapping("/clients/current/accounts")
+    @GetMapping("/clients/current/accounts")
     public List<AccountDTO> getAccounts(Authentication authentication){
         return accountService.getAccounts(authentication);
     }
 
-    @RequestMapping("/clients/current/accounts/{id}")
+    @GetMapping("/clients/current/accounts/{id}")
     public AccountDTO getAccount(@PathVariable Long id){
         return accountService.getAccount(id);
     }
 
-   @RequestMapping(path = "/clients/current/accounts", method = RequestMethod.POST)
+   @PostMapping("/clients/current/accounts")
     public ResponseEntity<Object> newAccount (Authentication authentication){
        Random randomN = new Random();
        int min = 0;

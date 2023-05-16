@@ -43,7 +43,7 @@ public class ClientController {
         return clientServices.getClients();
     }
 
-    @RequestMapping(path="/clients", method = RequestMethod.POST)
+    @PostMapping("/clients")
     public ResponseEntity<Object> register(
             @RequestParam String firstName, @RequestParam String lastName,
             @RequestParam String email, @RequestParam String password) {

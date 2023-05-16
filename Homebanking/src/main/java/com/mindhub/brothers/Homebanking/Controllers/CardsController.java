@@ -31,12 +31,12 @@ public class CardsController {
     @Autowired
     ClientServices clientServices;
 
-    @RequestMapping(path = "/clients/current/cards", method = RequestMethod.GET)
+    @GetMapping("/clients/current/cards")
     public List<CardDTO> getCards(Authentication authentication){
         return cardService.getCards(authentication);
     }
 
-    @RequestMapping(path = "/clients/current/cards", method = RequestMethod.POST)
+    @PostMapping("/clients/current/cards")
     public ResponseEntity<Object> newCard(Authentication authentication, @RequestParam String type, @RequestParam String color){
 
         if (type.isEmpty() || color.isEmpty()) {

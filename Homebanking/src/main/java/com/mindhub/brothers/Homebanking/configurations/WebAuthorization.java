@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
                 .antMatchers(HttpMethod.POST,"/api/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/logout").hasAnyAuthority("CLIENT","ADMIN")
                 .antMatchers(HttpMethod.POST,"/api/loans/**").hasAnyAuthority("CLIENT","ADMIN")
+                .antMatchers(HttpMethod.POST,"/api/client/current/account_status").hasAuthority("CLIENT")
                 .antMatchers(  "/web/index.html").permitAll()
                 .antMatchers(  "/web/js/index.js").permitAll()
                 .antMatchers("/web/js/transfer.js").hasAnyAuthority("CLIENT", "ADMIN")
