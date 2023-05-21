@@ -25,15 +25,16 @@ import javax.servlet.http.HttpSession;
                 .antMatchers(HttpMethod.POST, "/api/logout").hasAnyAuthority("CLIENT","ADMIN")
                 .antMatchers(HttpMethod.POST,"/api/loans/**").hasAnyAuthority("CLIENT","ADMIN")
                 .antMatchers(HttpMethod.POST,"/api/client/current/account_status").hasAuthority("CLIENT")
+                .antMatchers("/api/clients/current/**").hasAnyAuthority("CLIENT","ADMIN")
                 .antMatchers(  "/web/index.html").permitAll()
                 .antMatchers(  "/web/js/index.js").permitAll()
                 .antMatchers("/web/js/transfer.js").hasAnyAuthority("CLIENT", "ADMIN")
                 .antMatchers(  "/web/style/index.css").permitAll()
-                .antMatchers(  "/web/style/**").permitAll()
+                .antMatchers(  "/web/**").permitAll()
                 .antMatchers("/manager.html").hasAuthority("ADMIN")
                 .antMatchers("/h2-console/**").hasAuthority("ADMIN")
-                .antMatchers( "/web/js/**" , "/web/html/**").hasAnyAuthority("CLIENT","ADMIN");
-
+                .antMatchers( "/web/js/**" , "/web/html/**").hasAnyAuthority("CLIENT","ADMIN")
+            .anyRequest().denyAll();
 
         http.formLogin()
                 .usernameParameter("email")

@@ -17,6 +17,9 @@ public class CardDTO {
     private String cardholder;
     private int cvv;
 
+    //Eliminar tarjeta
+    private Boolean active;
+
     public CardDTO (Card card){
         this.id= card.getId();
         this.type= card.getType();
@@ -26,6 +29,7 @@ public class CardDTO {
         this.thruDate=card.getThruDate();
         this.cardholder= card.getCardholder();
         this.cvv= card.getCvv();
+        this.active = card.getActive();
     }
 
     public long getId() {
@@ -58,5 +62,9 @@ public class CardDTO {
 
     public int getCvv() {
         return cvv;
+    }
+
+    public Boolean getActive() {
+        return active;
     }
 }

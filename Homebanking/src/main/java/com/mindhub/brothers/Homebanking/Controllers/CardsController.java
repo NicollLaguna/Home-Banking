@@ -3,10 +3,7 @@ package com.mindhub.brothers.Homebanking.Controllers;
 import com.mindhub.brothers.Homebanking.dtos.AccountDTO;
 import com.mindhub.brothers.Homebanking.dtos.CardDTO;
 import com.mindhub.brothers.Homebanking.dtos.ClientDTO;
-import com.mindhub.brothers.Homebanking.models.Account;
-import com.mindhub.brothers.Homebanking.models.Card;
-import com.mindhub.brothers.Homebanking.models.CardColor;
-import com.mindhub.brothers.Homebanking.models.CardType;
+import com.mindhub.brothers.Homebanking.models.*;
 import com.mindhub.brothers.Homebanking.repositories.CardRepository;
 import com.mindhub.brothers.Homebanking.repositories.ClientRepository;
 import com.mindhub.brothers.Homebanking.services.CardService;
@@ -64,7 +61,7 @@ public class CardsController {
                     return new ResponseEntity<>("There is a card with this color and type", HttpStatus.FORBIDDEN);
                 }
             }
-            Card newCard = new Card(CardType.valueOf(type), CardColor.valueOf(color), number+"-"+number2+"-"+number3+"-"+number4, LocalDate.now(), LocalDate.now().plusYears(5),clientServices.findByEmail(authentication.getName()).getFirstName()+" "+clientServices.findByEmail(authentication.getName()).getLastName(),cvvN);
+            Card newCard = new Card(CardType.valueOf(type), CardColor.valueOf(color), number+"-"+number2+"-"+number3+"-"+number4, LocalDate.now(), LocalDate.now().plusYears(5),clientServices.findByEmail(authentication.getName()).getFirstName()+" "+clientServices.findByEmail(authentication.getName()).getLastName(),cvvN,true);
             clientServices.findByEmail(authentication.getName()).addCards(newCard);
             cardService.saveCard(newCard);
         }else {
@@ -73,5 +70,28 @@ public class CardsController {
 
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/clients/current/cards/{id}")
+    public ResponseEntity<Object> deleteCard(Authentication authentication, @PathVariable long id){
+        Client client= clientServices.findByEmail(authentication.getName());
+        Card card = cardService.findById(id);
+
+        if (!client.getCards().contains(card)){
+            return new ResponseEntity<>("This card is not yours",HttpStatus.FORBIDDEN);
+        }
+
+        if (card == null){
+            return new ResponseEntity<>("This card not found", HttpStatus.FORBIDDEN);
+        }
+
+        if (!card.getActive()){
+            return new ResponseEntity<>("This card is inactive", HttpStatus.FORBIDDEN);
+        }
+
+        card.setActive(false);
+        cardService.saveCard(card);
+
+        return new ResponseEntity<>("Card deleted", HttpStatus.ACCEPTED);
     }
 }

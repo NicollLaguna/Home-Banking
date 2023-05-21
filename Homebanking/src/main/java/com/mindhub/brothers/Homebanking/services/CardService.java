@@ -11,5 +11,6 @@ public interface CardService {
     List<CardDTO> getCards(Authentication authentication);
     Card findByNumber (String number);
     Card findByCvv (int cvv);
+    Card findById(long id);//Eliminar tarjeta
     void saveCard(Card card);
 }

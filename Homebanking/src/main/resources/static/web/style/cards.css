@@ -30,6 +30,21 @@ header div {
   gap: 3rem;
   margin-bottom: 2rem;
 }
+.deletebutton{
+  z-index: 2;
+  position: absolute;
+  left: 344px;
+  top: 217px;
+}
+
+.cardExpired{
+  position: absolute;
+  width:100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.312);
+  backdrop-filter: blur(1px);
+  border-radius: 15px;
+}
 
 .material-symbols-outlined {
   font-variation-settings:

@@ -36,6 +36,12 @@ public class CardServiceImplement implements CardService {
         return cardRepository.findByCvv(cvv);
     }
 
+    //Eliminar tarjeta
+    @Override
+    public Card findById(long id) {
+        return cardRepository.findById(id).orElse(null);
+    }
+
     @Override
     public void saveCard(Card card) {
         cardRepository.save(card);
