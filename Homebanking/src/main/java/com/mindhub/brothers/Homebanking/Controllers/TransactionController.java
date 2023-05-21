@@ -66,11 +66,11 @@ public class TransactionController {
     originAccount.setBalance(originAccount.getBalance()-amount);
     destinyAccount.setBalance(destinyAccount.getBalance()+amount);
 
-        Transaction debitTransaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.DEBIT);
+        Transaction debitTransaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.DEBIT,true);
         originAccount.addTransaction(debitTransaction);
         transactionService.saveTransaction(debitTransaction);
 
-        Transaction creditTransaction = new Transaction(amount, description, LocalDateTime.now(),TransactionType.CREDIT);
+        Transaction creditTransaction = new Transaction(amount, description, LocalDateTime.now(),TransactionType.CREDIT,true);
         destinyAccount.addTransaction(creditTransaction);
         transactionService.saveTransaction(creditTransaction);
 

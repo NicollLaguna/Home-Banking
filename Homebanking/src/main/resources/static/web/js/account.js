@@ -17,6 +17,7 @@ const app = createApp({
             dateStart: '',
             dateEnd:'',
             accNumber: '',
+            finalBalance:0,
         }
     },
     created() {
@@ -31,6 +32,8 @@ const app = createApp({
                         this.account = response.data;
                         this.account2= this.account.transactions.sort((x,y)=> y.id-x.id);
                         console.log(this.account)
+
+                        this.sumbalance()
                     })
                     
             } catch { err => console.log(err) };
@@ -82,7 +85,19 @@ const app = createApp({
                 "Select two dates to filter!",
                 'error'
             );
-        }}//PDF
+        }},//PDF
+
+        //Balance ajustable
+        sumbalance(){
+            for (let transaction of this.account2){
+                if(transaction.type === "CREDIT"){
+                    this.finalBalance = this.finalBalance + transaction.amount
+                }else{
+                    this.finalBalance=this.finalBalance-transaction.amount
+                }
+            }
+            this.finalBalance = this.finalBalance.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+        }//Balance
     }, 
 }
 ).mount('#app');

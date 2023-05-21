@@ -13,4 +13,6 @@ public interface AccountService {
     void saveAccount(Account account);
 
     Account findByNumber (String number);
+
+    Account findById (long id);
 }

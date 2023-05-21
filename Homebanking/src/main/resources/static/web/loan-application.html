@@ -58,6 +58,9 @@
                     <option :value="payment">{{payment}}</option>
                 </template>
             </select>
+            <template v-if="loanType">
+                <p class="m-0">Max Amount: {{ formatCurrency(getMaxAmount(loanType))}}</p>
+            </template>
             <div class="m-1 text-center">
                 <label class="d-flex flex-column">Enter the loan amount 
                     <input type="number" v-model="amount" required>
@@ -70,7 +73,7 @@
                     </option>
                 </template>
             </select>
-            <h5>Total loan : $ <span>{{amount*1.2}}</span></h5>
+            <h5>Total loan : $ <span>{{formatCurrency(amount*1.2)}}</span></h5>
             <button type="submit" class="createCard">Apply</button>
         <p>The amount to pay is equal to the amount of the loan plus 20% interest</p>
         

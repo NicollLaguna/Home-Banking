@@ -24,6 +24,8 @@ const app = createApp({
             .then(response => {
                 this.loans = response.data;
                 console.log(this.loans)
+
+                this.getMaxAmount()
             })
             .catch(error => console.log(error));
         },
@@ -96,7 +98,17 @@ const app = createApp({
                     text: error.response.data}
                 )
             })
-        }
+        },
+        getMaxAmount(loanName){
+          const loan= this.loans.find(loan => loan.name === loanName)
+          return loan ? loan.maxAmount : 0
+        },
+        formatCurrency(loanType){
+          let options = { style: 'currency', currency: 'USD' };
+          let numberFormat = new Intl.NumberFormat('en-US', options);
+          return numberFormat.format(loanType);}
+        
+        
     }
 })
 app.mount('#app');

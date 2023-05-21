@@ -38,7 +38,7 @@ public class LoanController {
     @Autowired
     ClientServices clientServices;
 
-    @GetMapping("/loans")
+    @RequestMapping("/loans")
     public List<LoanDTO> getLoans(){
         return loanService.getLoans();
     }
@@ -98,7 +98,7 @@ public ResponseEntity<Object> newLoan(@RequestBody LoanApplicationDTO loanApplic
 
     //Se debe crear una transacción “CREDIT” asociada a la cuenta de destino
     // (el monto debe quedar positivo) con la descripción concatenando el nombre del préstamo y la frase “loan approved”
-    Transaction creditTloan = new Transaction(amount,loan.getName()+" loan approved", LocalDateTime.now(),TransactionType.CREDIT);
+    Transaction creditTloan = new Transaction(amount,loan.getName()+" loan approved", LocalDateTime.now(),TransactionType.CREDIT, true);
     account.addTransaction(creditTloan);
     transactionRepository.save(creditTloan);
 

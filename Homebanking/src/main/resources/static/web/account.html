@@ -55,14 +55,21 @@
                 </thead>
                 <tbody class="text-center" v-for="dato of account2">
                     <tr>
-                        <td v-if="dato.type=='CREDIT'" class="table-success">+{{formatCurrency(dato.amount)}} </td>
-                        <td v-if="dato.type=='DEBIT'" class="table-danger">{{formatCurrency("-"+dato.amount)}} </td>
                         <td>{{dato.description}}</td>
                         <td>{{dato.date.slice(0,10)}}</td>
                         <td>{{dato.date.slice(11,16)}}</td>
                         <td>{{dato.type}}</td>
+                        <td v-if="dato.type=='CREDIT'" class="table-success">+{{formatCurrency(dato.amount)}} </td>
+                        <td v-if="dato.type=='DEBIT'" class="table-danger">{{formatCurrency("-"+dato.amount)}} </td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <!-- Balance ajustable -->
+                        <td colspan="4">BALANCE</td>
+                        <td class="text-center">{{finalBalance}}</td>
+                    </tr>
+                </tfoot>
             </table>
 
             <button data-bs-target="#PDF" data-bs-toggle="modal">Download PDF</button>

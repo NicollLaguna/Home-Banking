@@ -62,7 +62,7 @@ public class ClientController {
         if (accountService.findByNumber("VIN-"+number)==null){
         Client newClient = new Client(firstName, lastName, email, passwordEncoder.encode(password));
         clientServices.saveClient(newClient);
-        Account defectAccount = new Account(0.00,"VIN"+number, LocalDateTime.now());
+        Account defectAccount = new Account(0.00,"VIN"+number, LocalDateTime.now(), true);
         newClient.addAccount(defectAccount);
         accountService.saveAccount(defectAccount);}
         return new ResponseEntity<>(HttpStatus.CREATED);

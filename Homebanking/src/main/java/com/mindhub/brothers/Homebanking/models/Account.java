@@ -17,6 +17,7 @@ public class Account {
     private String number;
     private LocalDateTime creationDate;
     private double balance;
+    private boolean active;//eliminar cuenta
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Client_id")
@@ -26,10 +27,11 @@ public class Account {
 
     public Account() {};
 
-    public  Account (double balan, String num, LocalDateTime date){
+    public  Account (double balan, String num, LocalDateTime date, boolean active){
         this.balance= balan;
         this.number = num;
         this.creationDate = date;
+        this.active=active;
     }
 
     public long getId() {
@@ -74,6 +76,14 @@ public class Account {
 
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void addTransaction (Transaction transaction){

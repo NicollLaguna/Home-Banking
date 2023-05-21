@@ -73,7 +73,7 @@ public class CardsController {
     }
 
     @PutMapping("/clients/current/cards/{id}")
-    public ResponseEntity<Object> deleteCard(Authentication authentication, @PathVariable long id){
+    public ResponseEntity<Object> deleteCard(Authentication authentication, @PathVariable Long id){
         Client client= clientServices.findByEmail(authentication.getName());
         Card card = cardService.findById(id);
 

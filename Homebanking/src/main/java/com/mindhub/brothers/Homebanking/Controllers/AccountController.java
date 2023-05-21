@@ -21,6 +21,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @RestController
 @RequestMapping("/api")
 public class AccountController {
@@ -45,7 +47,7 @@ public class AccountController {
         return accountService.getAccount(id);
     }
 
-   @PostMapping("/clients/current/accounts")
+    @PostMapping("/clients/current/accounts")
     public ResponseEntity<Object> newAccount (Authentication authentication){
        Random randomN = new Random();
        int min = 0;
@@ -53,7 +55,7 @@ public class AccountController {
        int number = randomN.nextInt((max-min)+1)+min;
 
         if (clientServices.findByEmail(authentication.getName()).getAccounts().size()<=2){
-            Account accountCreated = new Account(0.00,"VIN"+number, LocalDateTime.now());
+            Account accountCreated = new Account(0.00,"VIN"+number, LocalDateTime.now(),true);
             clientServices.findByEmail(authentication.getName()).addAccount(accountCreated);
             accountService.saveAccount(accountCreated);
         }else{
@@ -65,4 +67,36 @@ public class AccountController {
        }
         return new ResponseEntity<>(HttpStatus.CREATED);
    }
+
+    @PutMapping("/clients/current/accounts/{id}")
+    public ResponseEntity<Object> deleteAccount (Authentication authentication, @PathVariable Long id){
+        Client client= clientServices.findByEmail(authentication.getName());
+        Account account=accountService.findById(id);
+
+        if(account == null){
+            return new ResponseEntity<>("This account not exist", HttpStatus.FORBIDDEN);
+        }
+
+        if (!account.isActive()){
+            return new ResponseEntity<>("This account is inactive", HttpStatus.FORBIDDEN);
+        }
+
+        if(account.getBalance()>0){
+            return new ResponseEntity<>("This account has money, it cannot be deleted",HttpStatus.FORBIDDEN);
+        }
+
+        if(client==null){
+            return new ResponseEntity<>("This user isn't client",HttpStatus.FORBIDDEN);
+        }
+
+        if (client.getAccounts().stream().filter(account1 -> account1.getId()==id).collect(toList()).size()==0){
+            return new ResponseEntity<>("This account is not owned by you", HttpStatus.FORBIDDEN);
+        }
+
+        account.setActive(false);
+        account.getTransactions().stream().forEach(transaction -> transaction.setActive(false));
+        accountService.saveAccount(account);
+
+        return new ResponseEntity<>("Account deleted",HttpStatus.ACCEPTED);
+    }
 }

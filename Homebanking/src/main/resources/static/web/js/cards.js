@@ -12,7 +12,7 @@ const app = createApp({
             id: '',
             debit:[],
             credit:[],
-            actualDate:'',
+            actualDate:'',//vencimiento de la tarjeta
         
         }
     },

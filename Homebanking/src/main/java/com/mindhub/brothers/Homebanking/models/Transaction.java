@@ -19,17 +19,21 @@ public class Transaction {
     private  String description;
     private LocalDateTime date;
 
+    private boolean active; //eliminar cuenta
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Account_id")
     private Account account;
 
     public Transaction(){}
 
-    public Transaction(double mount,String describe, LocalDateTime dat, TransactionType type1){
+    public Transaction(double mount,String describe, LocalDateTime dat, TransactionType type1, boolean active){
         this.type = type1;
         this.amount = mount;
         this.description = describe;
         this.date = dat;
+        this.active=active;
+
     }
     public long getId() {
         return id;
@@ -63,6 +67,14 @@ public class Transaction {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @JsonIgnore

@@ -23,6 +23,7 @@
     <script defer src="./js/accounts.js"></script>
     <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="font" id="app">
@@ -61,6 +62,7 @@
                     <th>CREATION DATE</th>
                     <th>BALANCE</th>
                     <th>TRANSACTIONS</th>
+                    <th>DELETE</th>
                 </tr>
             </thead>
             <tbody class="text-center" v-for="dato of idClient2">
@@ -70,6 +72,7 @@
                     <td>{{format(dato.balance)}}</td>
                     <td><a :href="'./account.html?id='+dato.id"><img src="./img/cuenta-bancaria.png"
                                 id="transaction"></a></td>
+                    <td><button  class="p-1 text-white bg-danger" @click="accountDelete(dato.id)">Delete</button></td>
                 </tr>
             </tbody>
         </table>

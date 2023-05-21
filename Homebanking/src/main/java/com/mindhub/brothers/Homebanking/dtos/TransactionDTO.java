@@ -12,12 +12,15 @@ public class TransactionDTO {
     private String description;
     private LocalDateTime date;
 
+    private boolean active;//eliminar cuenta
+
     public TransactionDTO(Transaction transaction) {
         this.id = transaction.getId();
         this.type = transaction.getType();
         this.amount = transaction.getAmount();
         this.description = transaction.getDescription();
         this.date = transaction.getDate();
+        this.active= transaction.isActive();
     }
 
     public long getId() {
@@ -38,5 +41,9 @@ public class TransactionDTO {
 
     public LocalDateTime getDate() {
         return date;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }
