@@ -14,6 +14,8 @@ public class TransactionDTO {
 
     private boolean active;//eliminar cuenta
 
+    private double balance;//balance ajustable
+
     public TransactionDTO(Transaction transaction) {
         this.id = transaction.getId();
         this.type = transaction.getType();
@@ -21,6 +23,7 @@ public class TransactionDTO {
         this.description = transaction.getDescription();
         this.date = transaction.getDate();
         this.active= transaction.isActive();
+        this.balance=transaction.getBalanceTotal();
     }
 
     public long getId() {
@@ -45,5 +48,9 @@ public class TransactionDTO {
 
     public boolean isActive() {
         return active;
+    }
+
+    public double getBalance() {
+        return balance;
     }
 }

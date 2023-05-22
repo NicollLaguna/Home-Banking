@@ -50,6 +50,8 @@ public ResponseEntity<Object> newLoan(@RequestBody LoanApplicationDTO loanApplic
     Loan loan = this.loanService.findById(loanApplicationDTO.getId());
     Account account= accountService.findByNumber(loanApplicationDTO.getAccountNumber());
     Client client = this.clientServices.findByEmail(authentication.getName());
+    double totalAmount =0;
+
 
 //Verificar que los datos sean correctos, es decir no estén vacíos, que el monto no sea 0 o que las cuotas no sean 0.
     if (amount == 0 || payments == 0){
@@ -88,23 +90,31 @@ public ResponseEntity<Object> newLoan(@RequestBody LoanApplicationDTO loanApplic
         return new ResponseEntity<>("Loan Application already exists",HttpStatus.FORBIDDEN);
     }
 
-    //Se debe crear una solicitud de préstamo con el monto solicitado sumando el 20% del mismo
-    int totalAmount = (int)(amount*1.20);
+    //Porcentaje ajustable de prestamos
+    if(loanApplicationDTO.getId()==1){
+        totalAmount= loanApplicationDTO.getAmount()*1.50;
+    }
+
+    if (loanApplicationDTO.getId()==2){
+        totalAmount= loanApplicationDTO.getAmount()*1.20;
+    }
+
+    if(loanApplicationDTO.getId()==3){
+        totalAmount=loanApplicationDTO.getAmount()*1.30;
+    }
+
     ClientLoan clientLoan = new ClientLoan(totalAmount,payments,loan.getName());
     clientLoan.setClient(client);
     clientLoan.setLoan(loan);
     clientLoanService.saveClientLoan(clientLoan);
 
-
-    //Se debe crear una transacción “CREDIT” asociada a la cuenta de destino
-    // (el monto debe quedar positivo) con la descripción concatenando el nombre del préstamo y la frase “loan approved”
-    Transaction creditTloan = new Transaction(amount,loan.getName()+" loan approved", LocalDateTime.now(),TransactionType.CREDIT, true);
+    //Balance ajustable
+    double initialBalance = account.getBalance()+loanApplicationDTO.getAmount();
+    double balance = account.getBalance();
+    double newBalance = balance + totalAmount;
+    Transaction creditTloan = new Transaction(totalAmount,loan.getName()+" loan approved", LocalDateTime.now(),TransactionType.CREDIT, true,newBalance);
     account.addTransaction(creditTloan);
     transactionRepository.save(creditTloan);
-
-    //Se debe actualizar la cuenta de destino sumando el monto solicitado.
-    double balance = account.getBalance();
-    double newBalance = balance + amount;
     account.setBalance(newBalance);
     accountService.saveAccount(account);
 

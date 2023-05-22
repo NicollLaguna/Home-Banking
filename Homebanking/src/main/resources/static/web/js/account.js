@@ -17,7 +17,7 @@ const app = createApp({
             dateStart: '',
             dateEnd:'',
             accNumber: '',
-            finalBalance:0,
+            
         }
     },
     created() {
@@ -30,10 +30,10 @@ const app = createApp({
                 axios.get('http://localhost:8585/api/clients/current/accounts/' + this.id)
                     .then(response => {
                         this.account = response.data;
-                        this.account2= this.account.transactions.sort((x,y)=> y.id-x.id);
+                        this.account2= this.account.transactions.sort((x,y)=> x.id-y.id);
                         console.log(this.account)
 
-                        this.sumbalance()
+                        /* this.sumbalance() */
                     })
                     
             } catch { err => console.log(err) };
@@ -62,7 +62,9 @@ const app = createApp({
     //PDF
     download(accNumber,dateStart,dateEnd){
         if(this.dateStart !== "" && this.dateEnd !== ""){
-            axios.post('/api/client/current/account_status',`accNumber=${this.account.number}&dateStart=${this.dateStart}00:00 &&dateEnd=${this.dateEnd} 23:58`)
+            axios.post('/api/client/current/account_status',`accNumber=${this.account.number}&dateStart=${this.dateStart} 00:00&&dateEnd=${this.dateEnd} 23:59`,{
+                responseType: 'blob'
+            })
             .then((response) => {
                 const url = window.URL.createObjectURL(new Blob([response.data], {
                     type: "application/pdf"
@@ -87,17 +89,8 @@ const app = createApp({
             );
         }},//PDF
 
-        //Balance ajustable
-        sumbalance(){
-            for (let transaction of this.account2){
-                if(transaction.type === "CREDIT"){
-                    this.finalBalance = this.finalBalance + transaction.amount
-                }else{
-                    this.finalBalance=this.finalBalance-transaction.amount
-                }
-            }
-            this.finalBalance = this.finalBalance.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-        }//Balance
+        
+         
     }, 
 }
 ).mount('#app');

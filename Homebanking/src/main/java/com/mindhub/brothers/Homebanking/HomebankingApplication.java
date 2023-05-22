@@ -36,10 +36,10 @@ public class HomebankingApplication {
 			client1.addAccount(account1);
 			client1.addAccount(account2);
 
-			Transaction transaction1 = new Transaction(1000, "debit of Melba",LocalDateTime.now(), TransactionType.DEBIT, true);
-			Transaction transaction2 = new Transaction(5000, "credit of Melba", LocalDateTime.now().plusDays(2).plusHours(5), TransactionType.CREDIT,true);
-			Transaction transaction3 = new Transaction(3550, "debit of Melba",LocalDateTime.now().plusDays(10).plusHours(4), TransactionType.DEBIT,true);
-			Transaction transaction4 = new Transaction(8690, "credit of Melba", LocalDateTime.now(), TransactionType.CREDIT,true);
+			Transaction transaction1 = new Transaction(5000, "credit of Melba", LocalDateTime.now().plusDays(2).plusHours(5), TransactionType.CREDIT,true,5000);
+			Transaction transaction2 = new Transaction(1000, "debit of Melba",LocalDateTime.now(), TransactionType.DEBIT, true,4000);
+			Transaction transaction3 = new Transaction(8690, "credit of Melba", LocalDateTime.now(), TransactionType.CREDIT,true,8690);
+			Transaction transaction4 = new Transaction(3550, "debit of Melba",LocalDateTime.now().plusDays(10).plusHours(4), TransactionType.DEBIT,true,5140);
 
 			accountRepository.save(account1);
 			accountRepository.save(account2);
@@ -67,10 +67,10 @@ public class HomebankingApplication {
 			client2.addAccount(account3);
 			client2.addAccount(account4);
 
-			Transaction transaction5 = new Transaction(1000, "debit of Luisa", LocalDateTime.now().plusDays(6).plusHours(8),TransactionType.DEBIT, true);
-			Transaction transaction6 = new Transaction(6500, "credit of Luisa", LocalDateTime.now(), TransactionType.CREDIT, true);
-			Transaction transaction7 = new Transaction(5000, "credit of Luisa", LocalDateTime.now().plusDays(2).plusHours(6), TransactionType.CREDIT, true);
-			Transaction transaction8 = new Transaction(1200, "debit of Luisa", LocalDateTime.now(), TransactionType.DEBIT,true);
+			Transaction transaction5 = new Transaction(6500, "credit of Luisa", LocalDateTime.now(), TransactionType.CREDIT, true,6500);
+			Transaction transaction6 = new Transaction(1000, "debit of Luisa", LocalDateTime.now().plusDays(6).plusHours(8),TransactionType.DEBIT, true,5500);
+			Transaction transaction7 = new Transaction(5000, "credit of Luisa", LocalDateTime.now().plusDays(2).plusHours(6), TransactionType.CREDIT, true,5000);
+			Transaction transaction8 = new Transaction(1200, "debit of Luisa", LocalDateTime.now(), TransactionType.DEBIT,true,3800);
 
 			accountRepository.save(account3);
 			accountRepository.save(account4);

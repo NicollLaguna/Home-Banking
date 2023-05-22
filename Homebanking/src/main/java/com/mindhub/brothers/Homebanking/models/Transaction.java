@@ -20,6 +20,7 @@ public class Transaction {
     private LocalDateTime date;
 
     private boolean active; //eliminar cuenta
+    private double balanceTotal;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Account_id")
@@ -27,12 +28,13 @@ public class Transaction {
 
     public Transaction(){}
 
-    public Transaction(double mount,String describe, LocalDateTime dat, TransactionType type1, boolean active){
+    public Transaction(double mount,String describe, LocalDateTime dat, TransactionType type1, boolean active, double balanceTotal){
         this.type = type1;
         this.amount = mount;
         this.description = describe;
         this.date = dat;
         this.active=active;
+        this.balanceTotal=balanceTotal;
 
     }
     public long getId() {
@@ -75,6 +77,14 @@ public class Transaction {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public double getBalanceTotal() {
+        return balanceTotal;
+    }
+
+    public void setBalanceTotal(double balanceTotal) {
+        this.balanceTotal = balanceTotal;
     }
 
     @JsonIgnore

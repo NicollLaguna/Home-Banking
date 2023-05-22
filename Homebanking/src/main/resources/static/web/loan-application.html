@@ -73,10 +73,14 @@
                     </option>
                 </template>
             </select>
-            <h5>Total loan : $ <span>{{formatCurrency(amount*1.2)}}</span></h5>
+            <!-- Porcentaje ajustable de prestamos -->
+            <h5 v-if="loanType=='Mortgage'">Total loan :  <span>{{formatCurrency(amount*1.5)}}</span></h5>
+            <h5 v-if="loanType=='Personal'">Total loan :  <span>{{formatCurrency(amount*1.2)}}</span></h5>
+            <h5 v-if="loanType=='Automotive'">Total loan :  <span>{{formatCurrency(amount*1.3)}}</span></h5>
             <button type="submit" class="createCard">Apply</button>
-        <p>The amount to pay is equal to the amount of the loan plus 20% interest</p>
-        
+        <p v-if="loanType=='Mortgage'">The amount to pay is equal to the amount of the loan plus 50% interest</p>
+        <p v-if="loanType=='Personal'">The amount to pay is equal to the amount of the loan plus 20% interest</p>
+        <p v-if="loanType=='Automotive'">The amount to pay is equal to the amount of the loan plus 30% interest</p>
         </form>
     </main>
 </body>

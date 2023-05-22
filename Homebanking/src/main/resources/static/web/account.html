@@ -46,11 +46,12 @@
             <table class="table">
                 <thead class="text-center">
                     <tr>
-                        <th>AMOUNT</th>
                         <th>DESCRIPTION</th>
                         <th>DAY</th>
                         <th>HOUR</th>
                         <th>TYPE</th>
+                        <th>AMOUNT</th>
+                        <th>BALANCE</th>
                     </tr>
                 </thead>
                 <tbody class="text-center" v-for="dato of account2">
@@ -61,15 +62,10 @@
                         <td>{{dato.type}}</td>
                         <td v-if="dato.type=='CREDIT'" class="table-success">+{{formatCurrency(dato.amount)}} </td>
                         <td v-if="dato.type=='DEBIT'" class="table-danger">{{formatCurrency("-"+dato.amount)}} </td>
+                        <td>{{formatCurrency(dato.balance)}}</td>
                     </tr>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <!-- Balance ajustable -->
-                        <td colspan="4">BALANCE</td>
-                        <td class="text-center">{{finalBalance}}</td>
-                    </tr>
-                </tfoot>
+               
             </table>
 
             <button data-bs-target="#PDF" data-bs-toggle="modal">Download PDF</button>

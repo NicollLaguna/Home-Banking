@@ -8,7 +8,8 @@ const app = createApp({
             idClient: [],
             idClient2:[],
             loans:  [],
-            
+            transactions:[],
+            finalBalance:0,
         }
     },
     created() {
@@ -24,6 +25,7 @@ const app = createApp({
                         this.idClient2 = this.idClient.accounts.sort((x,y)=> x.id-y.id).filter(account => account.active);
                         this.loans = this.idClient.loans;
                         console.log(this.idClient2)
+                        console.log(this.idClient)
                     })
                     .catch(err=>console.error(err));
             }, 
@@ -92,7 +94,19 @@ const app = createApp({
                     text: error.response.data}
                 )
             })
-        }//eliminar la cuenta
+        },
+        //eliminar la cuenta
+      
+        sumbalance(){
+          for (let transaction of this.idClient2.transactions){
+              if(transaction.type === "CREDIT"){
+                  this.finalBalance = this.finalBalance + transaction.amount
+              }else{
+                  this.finalBalance=this.finalBalance-transaction.amount
+              }
+          }
+          this.finalBalance = this.finalBalance.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+      }//balance exacto
         },
        
 });

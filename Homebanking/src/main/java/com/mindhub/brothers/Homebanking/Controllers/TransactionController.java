@@ -63,16 +63,22 @@ public class TransactionController {
         return new ResponseEntity<>("Insufficient money", HttpStatus.FORBIDDEN);
     }
 
-    originAccount.setBalance(originAccount.getBalance()-amount);
-    destinyAccount.setBalance(destinyAccount.getBalance()+amount);
 
-        Transaction debitTransaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.DEBIT,true);
+    //balance ajustable
+    double initialOriginBalanceAccount = originAccount.getBalance();
+
+        Transaction debitTransaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.DEBIT,true,initialOriginBalanceAccount);
         originAccount.addTransaction(debitTransaction);
+        debitTransaction.setBalanceTotal(initialOriginBalanceAccount - amount);
         transactionService.saveTransaction(debitTransaction);
+        originAccount.setBalance(originAccount.getBalance()-amount);
 
-        Transaction creditTransaction = new Transaction(amount, description, LocalDateTime.now(),TransactionType.CREDIT,true);
+    double initialDestinBalanceAccount = destinyAccount.getBalance();
+        Transaction creditTransaction = new Transaction(amount, description, LocalDateTime.now(),TransactionType.CREDIT,true,initialDestinBalanceAccount);
         destinyAccount.addTransaction(creditTransaction);
+        creditTransaction.setBalanceTotal(initialDestinBalanceAccount + amount);
         transactionService.saveTransaction(creditTransaction);
+        destinyAccount.setBalance(destinyAccount.getBalance()+amount);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -111,7 +117,7 @@ public class TransactionController {
         String headerValue = "attachment; filename= Transactions" + accNumber + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTimeStart = LocalDateTime.parse(dateStart, formatter);
         LocalDateTime dateTimeEnd = LocalDateTime.parse(dateEnd, formatter);
 
