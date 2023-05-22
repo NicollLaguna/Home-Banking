@@ -30,8 +30,8 @@ public class HomebankingApplication {
 			Client client1 = new Client("Melba","Morel","melba@mindhub.com", passwordEncoder.encode("0000"));
 			clientRepository.save(client1);
 
-			Account account1 = new Account(4000, "VIN001", LocalDateTime.now(), true);
-			Account account2 = new Account(5140, "VIN002", LocalDateTime.now().plusDays(1), true);
+			Account account1 = new Account(4000, "VIN001", LocalDateTime.now(), true, AccountType.SAVINGS);
+			Account account2 = new Account(5140, "VIN002", LocalDateTime.now().plusDays(1), true, AccountType.CURRENT);
 
 			client1.addAccount(account1);
 			client1.addAccount(account2);
@@ -61,8 +61,8 @@ public class HomebankingApplication {
 			Client client2 = new Client("Luisa", "Mendoza", "luisa@gmail.com", passwordEncoder.encode("1503" ));
 			clientRepository.save(client2);
 
-			Account account3 = new Account(5500, "VIN003",LocalDateTime.now(),true);
-			Account account4 = new Account(3800, "VIN004", LocalDateTime.now().plusDays(2),true);
+			Account account3 = new Account(5500, "VIN003",LocalDateTime.now(),true, AccountType.SAVINGS);
+			Account account4 = new Account(3800, "VIN004", LocalDateTime.now().plusDays(2),true, AccountType.SAVINGS);
 
 			client2.addAccount(account3);
 			client2.addAccount(account4);

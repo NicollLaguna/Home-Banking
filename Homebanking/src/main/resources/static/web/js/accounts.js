@@ -10,6 +10,7 @@ const app = createApp({
             loans:  [],
             transactions:[],
             finalBalance:0,
+            accountType:'',
         }
     },
     created() {
@@ -40,13 +41,59 @@ const app = createApp({
             .catch(error => console.log(error));
         },
         newAccount(){
-            axios.post('http://localhost:8585/api/clients/current/accounts')
-            .then(response=>window.location.href="/web/accounts.html")
-            .catch(error => console.log(error));
-        },
+          const swalWithBootstrapButtons = Swal.mixin({
+              customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+              },
+              buttonsStyling: false
+            })
+            
+            swalWithBootstrapButtons.fire({
+              title: 'Do you want to create an account?',
+              text: "You can't reverse this action.!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Yes, I want!',
+              cancelButtonText: 'No, cancel!',
+              reverseButtons: true
+            }).then((result) => {
+              if (result.isConfirmed) {
+                axios.post('http://localhost:8585/api/clients/current/accounts',`accountType=${this.accountType}`)
+                .then((result) => window.location.href = "/web/accounts.html")
+                .catch(error => {
+                  Swal.fire({
+                      icon: 'error',
+                      text: error.response.data}
+                  )
+                  
+              })
+              swalWithBootstrapButtons.fire(
+                  'Successful creation',
+                  'Your account was created.',
+                  'success'
+                )
+                
+              } else if (
+                result.dismiss === Swal.DismissReason.cancel
+              ) {
+                swalWithBootstrapButtons.fire(
+                  'Cancelled',
+                  "The account will not be created",
+                  'error'
+                )
+              }
+            }).catch(error => {
+              Swal.fire({
+                  icon: 'error',
+                  text: error.response.data}
+              )
+          })
+      },
+       
         //Eliminar cuenta
         accountDelete(id){
-            const swalWithBootstrapButtons = Swal.mixin({
+            const swalWithBootstrapButtons =Swal.mixin({
                 customClass: {
                   confirmButton: 'btn btn-success',
                   cancelButton: 'btn btn-danger'

@@ -3,6 +3,7 @@ package com.mindhub.brothers.Homebanking.Controllers;
 import com.mindhub.brothers.Homebanking.dtos.AccountDTO;
 import com.mindhub.brothers.Homebanking.dtos.ClientDTO;
 import com.mindhub.brothers.Homebanking.models.Account;
+import com.mindhub.brothers.Homebanking.models.AccountType;
 import com.mindhub.brothers.Homebanking.models.Client;
 import com.mindhub.brothers.Homebanking.repositories.AccountRepository;
 import com.mindhub.brothers.Homebanking.repositories.ClientRepository;
@@ -48,21 +49,24 @@ public class AccountController {
     }
 
     @PostMapping("/clients/current/accounts")
-    public ResponseEntity<Object> newAccount (Authentication authentication){
+    public ResponseEntity<Object> newAccount (Authentication authentication, @RequestParam String accountType){
        Random randomN = new Random();
        int min = 0;
        int max = 99999999;
        int number = randomN.nextInt((max-min)+1)+min;
 
-        if (clientServices.findByEmail(authentication.getName()).getAccounts().size()<=2){
-            Account accountCreated = new Account(0.00,"VIN"+number, LocalDateTime.now(),true);
+       if (!accountType.equalsIgnoreCase("SAVINGS")&&!accountType.equalsIgnoreCase("CURRENT")){
+           return new ResponseEntity<>("The type of account is required ",HttpStatus.FORBIDDEN);
+       }
+       if (clientServices.findByEmail(authentication.getName()).getAccounts().size()<=2){
+            Account accountCreated = new Account(0.00,"VIN"+number, LocalDateTime.now(),true, AccountType.valueOf(accountType.toUpperCase()));
             clientServices.findByEmail(authentication.getName()).addAccount(accountCreated);
             accountService.saveAccount(accountCreated);
-        }else{
+       }else{
             return new ResponseEntity<>("There are 3 accounts created", HttpStatus.FORBIDDEN);
         }
 
-       if (accountService.findByNumber("VIN"+number) != null){
+       if (accountService.findByNumber("VIN"+number) == null){
            return  new ResponseEntity<>("Number cannot be use", HttpStatus.FORBIDDEN);
        }
         return new ResponseEntity<>(HttpStatus.CREATED);

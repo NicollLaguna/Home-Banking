@@ -39,7 +39,7 @@
         <div>
             <h5>{{idClient.firstName}} {{idClient.lastName}}</h5>
             <img src="./img/person-circle.svg">
-            <a href="" @click="exit"><ion-icon name="exit-outline" class="salir"></ion-icon></a>
+            <a  href="" @click="exit"><ion-icon name="exit-outline" class="salir"></ion-icon></a>
         </div>
     </header>
     <main class="d-flex align-items-center flex-column">
@@ -66,7 +66,7 @@
                     <input type="number" v-model="amount" required>
                 </label>
             </div>
-            <select class="form-select" aria-label="Default select example" v-model="accountNumber">
+            <select class="form-select" aria-label="Default select example" v-model="accountNumber" required>
                 <option selected value="">Select destiny account</option>
                 <template v-for="account of accounts">
                     <option :value="account.number">Account {{account.number}}
