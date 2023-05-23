@@ -9,6 +9,7 @@ import com.mindhub.brothers.Homebanking.repositories.AccountRepository;
 import com.mindhub.brothers.Homebanking.repositories.ClientRepository;
 import com.mindhub.brothers.Homebanking.services.AccountService;
 import com.mindhub.brothers.Homebanking.services.ClientServices;
+import com.mindhub.brothers.Homebanking.utils.AccountUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,28 +51,31 @@ public class AccountController {
 
     @PostMapping("/clients/current/accounts")
     public ResponseEntity<Object> newAccount (Authentication authentication, @RequestParam String accountType){
-       Random randomN = new Random();
-       int min = 0;
-       int max = 99999999;
-       int number = randomN.nextInt((max-min)+1)+min;
+        Client client = clientServices.findByEmail(authentication.getName());
+
+        String accountNumber;
+        do{
+            accountNumber= AccountUtils.getAccountNumber();
+        }while (accountService.findByNumber(accountNumber)!= null);
+
+        int totalAccounts = client.getAccounts().size();
+        int activeAccounts = (int) client.getAccounts().stream().filter(account -> account.isActive()).count();
+
+        if (totalAccounts >= 8 || activeAccounts >= 3) {
+            return new ResponseEntity<>("Client already has the maximum number of accounts allowed.",HttpStatus.FORBIDDEN);
+        }
 
        if (!accountType.equalsIgnoreCase("SAVINGS")&&!accountType.equalsIgnoreCase("CURRENT")){
            return new ResponseEntity<>("The type of account is required ",HttpStatus.FORBIDDEN);
        }
-       if (clientServices.findByEmail(authentication.getName()).getAccounts().size()<=2){
-            Account accountCreated = new Account(0.00,"VIN"+number, LocalDateTime.now(),true, AccountType.valueOf(accountType.toUpperCase()));
-            clientServices.findByEmail(authentication.getName()).addAccount(accountCreated);
-            accountService.saveAccount(accountCreated);
-       }else{
-            return new ResponseEntity<>("There are 3 accounts created", HttpStatus.FORBIDDEN);
-        }
 
-       if (accountService.findByNumber("VIN"+number) == null){
-           return  new ResponseEntity<>("Number cannot be use", HttpStatus.FORBIDDEN);
-       }
+
+       Account accountCreated = new Account(0.00,accountNumber, LocalDateTime.now(),true, AccountType.valueOf(accountType.toUpperCase()));
+        clientServices.findByEmail(authentication.getName()).addAccount(accountCreated);
+        accountService.saveAccount(accountCreated);
         return new ResponseEntity<>(HttpStatus.CREATED);
    }
-
+    //Ocultar cuentas
     @PutMapping("/clients/current/accounts/{id}")
     public ResponseEntity<Object> deleteAccount (Authentication authentication, @PathVariable Long id){
         Client client= clientServices.findByEmail(authentication.getName());

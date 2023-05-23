@@ -13,7 +13,7 @@ const app = createApp({
             debit:[],
             credit:[],
             actualDate:'',//vencimiento de la tarjeta
-        
+            cardsActive:[] //ocultar tarjetas
         }
     },
     created() {
@@ -27,9 +27,10 @@ const app = createApp({
                         this.datos = response.data;
                         this.cards = this.datos.cards;
                         this.debit = this.cards.filter(card => card.type == "DEBIT" && card.active);
-                        console.log(this.debit)
                         this.credit = this.cards.filter(card => card.type == "CREDIT" && card.active);
-                        console.log(this.credit)
+                        this.cardsActive = this.cards.filter(card => card.active)
+                        console.log(this.cards)
+                        console.log(this.cardsActive)
                         this.actualDate= new Date().toLocaleDateString().split(",")[0].split("/").reverse().join("-");
                         
                     })

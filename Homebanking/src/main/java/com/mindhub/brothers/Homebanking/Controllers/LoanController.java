@@ -120,4 +120,30 @@ public ResponseEntity<Object> newLoan(@RequestBody LoanApplicationDTO loanApplic
 
     return new ResponseEntity<>("Loan apply created",HttpStatus.CREATED);
 }
+
+ @PostMapping("/loans/admin-loan")
+    public ResponseEntity<Object> newLoanAdmin(@RequestBody Loan loan){
+        if(loan.getName().isBlank()){
+            return new ResponseEntity<>("Loan name is necessary",HttpStatus.FORBIDDEN);
+        }
+        if(loan.getMaxAmount()<1){
+            return new ResponseEntity<>("Max amount  must be greater than 1 ",HttpStatus.FORBIDDEN);
+        }
+
+        if(loan.getPayments().size()==0){
+            return new ResponseEntity<>("Insert valid payments", HttpStatus.FORBIDDEN);
+        }
+
+        for(LoanDTO loans: loanService.getLoans()){
+            if (loan.getName().equalsIgnoreCase(loans.getName())){
+                return new ResponseEntity<>("This type of loan "+loan.getName()+" is already used",HttpStatus.FORBIDDEN);
+            }
+        };
+
+        Loan newLoan = new Loan(loan.getName(), loan.getMaxAmount(),loan.getPayments());
+        loanService.saveLoan(newLoan);
+
+        return new ResponseEntity<>("A new type of loan was created", HttpStatus.CREATED);
+
+ }
 }

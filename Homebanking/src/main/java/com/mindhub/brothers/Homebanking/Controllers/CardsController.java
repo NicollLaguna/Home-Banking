@@ -8,6 +8,7 @@ import com.mindhub.brothers.Homebanking.repositories.CardRepository;
 import com.mindhub.brothers.Homebanking.repositories.ClientRepository;
 import com.mindhub.brothers.Homebanking.services.CardService;
 import com.mindhub.brothers.Homebanking.services.ClientServices;
+import com.mindhub.brothers.Homebanking.utils.CardUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,43 +36,42 @@ public class CardsController {
 
     @PostMapping("/clients/current/cards")
     public ResponseEntity<Object> newCard(Authentication authentication, @RequestParam String type, @RequestParam String color){
+    Client client= clientServices.findByEmail(authentication.getName());
+
+        int cvvN;
+        do{
+            cvvN = CardUtils.getCardCvv();
+        }while (cardService.findByCvv(cvvN)!=null);
+
+        String cardNumber;
+        do{
+            cardNumber = CardUtils.getCardNumber();
+        }while (cardService.findByNumber(cardNumber)!=null);
 
         if (type.isEmpty() || color.isEmpty()) {
             return new ResponseEntity<>("Missing data", HttpStatus.FORBIDDEN);
         }
-        Random randomN = new Random();
-        int min = 1000;
-        int min2 = 100;
-        int max = 9999;
-        int cvv = 999;
-        int number = randomN.nextInt((max-min)+1)+min;
-        int number2 = randomN.nextInt((max-min)+1)+min;
-        int number3 = randomN.nextInt((max-min)+1)+min;
-        int number4 = randomN.nextInt((max-min)+1)+min;
-        int cvvN = randomN.nextInt((cvv-min2)+1)+min2;
-        if (cardService.findByCvv(cvvN) != null){
-            return  new ResponseEntity<>("Cvv cannot be use", HttpStatus.FORBIDDEN);
+
+        int totalCards = client.getCards().size();
+        int activeCards = (int) client.getCards().stream().filter(card -> card.getActive()).count();
+
+        if (totalCards >= 12 || activeCards>=6) {
+            return new ResponseEntity<>("Client already has the maximum number of cards allowed.",HttpStatus.FORBIDDEN);
         }
-        if (cardService.findByNumber(number+" "+number+" "+number+" "+number) != null){
-            return  new ResponseEntity<>("Number cannot be use", HttpStatus.FORBIDDEN);
-        }
-        if (clientServices.findByEmail(authentication.getName()).getCards().size()<=5){
-            for (Card card : clientServices.findByEmail(authentication.getName()).getCards()) {
-                if (card.getType().equals(CardType.valueOf(type)) && card.getColor().equals(CardColor.valueOf(color))) {
+
+        for (Card card : clientServices.findByEmail(authentication.getName()).getCards()) {
+                if (card.getType().equals(CardType.valueOf(type)) && card.getColor().equals(CardColor.valueOf(color)) && card.getActive()) {
                     return new ResponseEntity<>("There is a card with this color and type", HttpStatus.FORBIDDEN);
                 }
             }
-            Card newCard = new Card(CardType.valueOf(type), CardColor.valueOf(color), number+"-"+number2+"-"+number3+"-"+number4, LocalDate.now(), LocalDate.now().plusYears(5),clientServices.findByEmail(authentication.getName()).getFirstName()+" "+clientServices.findByEmail(authentication.getName()).getLastName(),cvvN,true);
-            clientServices.findByEmail(authentication.getName()).addCards(newCard);
-            cardService.saveCard(newCard);
-        }else {
-            return new ResponseEntity<>("Cannot create more than 6 cards",HttpStatus.FORBIDDEN);
-        }
 
+        Card newCard = new Card(CardType.valueOf(type), CardColor.valueOf(color), cardNumber, LocalDate.now(), LocalDate.now().plusYears(5),clientServices.findByEmail(authentication.getName()).getFirstName()+" "+clientServices.findByEmail(authentication.getName()).getLastName(),cvvN,true);
+        clientServices.findByEmail(authentication.getName()).addCards(newCard);
+        cardService.saveCard(newCard);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
+    //Ocultar tarjetas
     @PutMapping("/clients/current/cards/{id}")
     public ResponseEntity<Object> deleteCard(Authentication authentication, @PathVariable Long id){
         Client client= clientServices.findByEmail(authentication.getName());
