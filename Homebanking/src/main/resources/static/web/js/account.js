@@ -26,7 +26,7 @@ const app = createApp({
     },
     methods: {
        loadData() {
-            try {
+        
                 axios.get('http://localhost:8585/api/clients/current/accounts/' + this.id)
                     .then(response => {
                         this.account = response.data;
@@ -34,9 +34,13 @@ const app = createApp({
                         console.log(this.account)
 
                         /* this.sumbalance() */
-                    })
+                    }).catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            text: error.response.data}
+                        )
+                    });
                     
-            } catch { err => console.log(err) };
         },
         Data2(){
             try{

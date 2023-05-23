@@ -45,8 +45,15 @@ public class AccountController {
     }
 
     @GetMapping("/clients/current/accounts/{id}")
-    public AccountDTO getAccount(@PathVariable Long id){
-        return accountService.getAccount(id);
+    public ResponseEntity<Object> getAccount(@PathVariable Long id,Authentication authentication){
+        Client client= clientServices.findByEmail(authentication.getName());
+        Account account = accountService.findById(id);
+
+        if(account != null && account.getClientId()==client){
+            AccountDTO accountDTO = new AccountDTO(account);
+            return new ResponseEntity<>(accountDTO,HttpStatus.OK);
+        }
+        return new ResponseEntity<>("This account is not owned by you", HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/clients/current/accounts")
