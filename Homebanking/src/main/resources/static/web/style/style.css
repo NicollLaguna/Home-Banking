@@ -27,7 +27,36 @@ form {
     border-radius: 20px;
 }
 
+.navbar-nav a {
+    color: white;
+    text-decoration: none;
+    margin: 1rem;
+    padding: 0.5rem;
+    border: 2px solid white;
+    border-radius: 15px;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+}
+.navbar-nav{
+    z-index: 3;
+}
 
+.navbar-nav a:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid white;
+}
+.navbar-collapse {
+    background-color: transparent;
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+}
+nav a:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid white;
+    box-shadow: 4px 2px 2px black;
+  }
 .material-symbols-outlined {
     font-variation-settings:
         'FILL' 1,
@@ -70,7 +99,7 @@ header {
     display: flex;
     padding: 1rem;
     gap: 1rem;
-    height: 15vh;
+    min-height: 13vh;
     align-items: center;
     justify-content: space-evenly;
     font-family: 'Josefin Sans', sans-serif;

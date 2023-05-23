@@ -106,12 +106,13 @@ footer .box2 {
 }
 
 .boxi1 {
-    background-color: rgba(0, 0, 0, 0.829);
+    background-color: rgba(2, 68, 114, 0.829);
     color: white;
     padding: 2rem;
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
+    border-bottom: 2px solid black;
 }
 .boxi1 div{
     display: flex;

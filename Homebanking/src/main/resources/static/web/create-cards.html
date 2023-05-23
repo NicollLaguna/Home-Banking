@@ -26,21 +26,33 @@
 <body class="font">
     <div id="app">
         <header>
-            <div> <span class="material-symbols-outlined">
-                    savings
-                </span>
-                <h1>Hopened Bank</h1>
-            </div>
-
-            <nav>
-                <a href="./accounts.html">ACCOUNTS</a>
-                <a href="./cards.html">CARDS</a>
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div>
+                        <h5>{{idClient.firstName}} {{idClient.lastName}}</h5>
+                        <img src="./img/person-circle.svg">
+                    </div> 
+                    <div>
+                        <span class="material-symbols-outlined">
+                            savings
+                        </span>
+                        <h1>Hopened Bank</h1>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            <a class="nav-link " href="./accounts.html">ACCOUNTS</a>
+                            <a class="nav-link" href="./cards.html">CARDS</a>
+                            <a class="nav-link" href="./transfers.html">TRANSFERS</a>
+                            <a href="" @click="exit"><ion-icon name="exit-outline" class="salir"></ion-icon></a>
+                        </div>
+                    </div>
+                </div>
             </nav>
-            <div>
-                <h5>{{idClient.firstName}} {{idClient.lastName}}</h5>
-                <img src="./img/person-circle.svg">
-                <a href="" @click="exit"><ion-icon name="exit-outline" class="salir"></ion-icon></a>
-            </div>
         </header>
         <main class="d-flex align-items-center flex-column justify-content-center">
             <form @submit.prevent="createCard" class="d-flex align-items-center flex-column cardsForm">
